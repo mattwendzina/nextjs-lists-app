@@ -1,0 +1,5 @@
+.item img {
+    object-fit: cover;
+    height: 20rem;
+    margin: auto;
+}
