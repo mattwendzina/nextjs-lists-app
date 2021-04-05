@@ -3,14 +3,16 @@ import Navbar from './Navbar/Navbar';
 
 const Layout = (props) => {
     return (
-        <Fragment>
-            <Navbar />
-            <main className="bg-gainsboro-50 h-screen">
-                <div className="bg-white min-h-full mx-auto md:max-w-5xl">
+        <div className="flex flex-col h-screen">
+            <div>
+                <Navbar />
+            </div>
+            <main className="bg-gainsboro-50 flex-1 h-full">
+                <div className="bg-white mx-auto md:max-w-5xl h-full">
                     {props.children}
                 </div>
             </main>
-        </Fragment>
+        </div>
     );
 };
 
