@@ -1,12 +1,7 @@
-import Input from '../components/ui/Input/input';
+import CreateList from '../components/Lists/CreateList';
 
 const createList = () => {
-    return (
-        <div>
-            <h2>Create List</h2>
-            <Input title="List name" />
-        </div>
-    );
+    return <CreateList />;
 };
 
 export default createList;
