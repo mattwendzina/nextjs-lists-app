@@ -1,15 +1,32 @@
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 const Navbar = (props) => {
+    const [title, setTitle] = useState();
+    const router = useRouter();
+
+    useEffect(() => {
+        console.log('router.pathname', router.pathname);
+        switch (router.pathname) {
+            case '/createList':
+                return setTitle('Create List');
+            case '/lists':
+                return setTitle('All Lists');
+            default:
+                return setTitle('');
+        }
+    });
+
     return (
-        <nav>
+        <nav className="relative">
+            <div className="inset-center text-white text-3xl ">{title}</div>
             <div className="flex p-3 gap-x-2 bg-teal-600 justify-between items-center">
                 <Link href="/">
                     <a className="hover:text-yellow-red-900 duration-300 text-white p-1 transition">
                         Home
                     </a>
                 </Link>
-
                 <div>
                     <Link href="/lists">
                         <a className="hover:text-yellow-red-900 duration-300 text-white px-2 transition">
