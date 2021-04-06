@@ -47,9 +47,6 @@ module.exports = {
             fontFamily: {
                 lexend: ['Lexend', 'Helvetica', 'Arial', 'sans-serif'],
             },
-            outline: {
-                blue: '2px solid #0000ff',
-            },
         },
     },
     variants: {
