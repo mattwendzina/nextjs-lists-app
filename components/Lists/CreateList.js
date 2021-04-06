@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import Input from '../ui/Input/input';
+import Button from '../ui/Button/Button';
 import List from './List';
 
 const CreateList = () => {
@@ -16,22 +17,24 @@ const CreateList = () => {
     };
 
     return (
-        <div className="flex">
+        <div className="md:flex">
             <div className="p-3">
-                <Input
-                    title="List name"
-                    id="listName"
-                    changed={(e) => setTitle(e.target.value)}
-                />
+                <div className="text-center">
+                    <Input
+                        title="List name"
+                        id="listName"
+                        changed={(e) => setTitle(e.target.value)}
+                    />
+                </div>
 
-                <form onSubmit={onSubmitItem}>
+                <form onSubmit={onSubmitItem} className="text-center">
                     <Input
                         title="Item name"
                         id="listItem"
                         changed={(e) => setItem(e.target.value)}
                         value={item}
                     />
-                    <button onSubmit={onSubmitItem}>Submit</button>
+                    <Button title="Submit" />
                 </form>
             </div>
             <div className="px-10 m-10 border-2 flex-grow rounded-md">
