@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import Input from '../ui/Input/input';
 import Button from '../ui/Button/Button';
@@ -6,14 +7,21 @@ import List from './List';
 
 const CreateList = () => {
     const [title, setTitle] = useState();
-    const [item, setItem] = useState();
+    const [item, setItem] = useState('');
     const [items, setItems] = useState([]);
 
     const onSubmitItem = (e) => {
         e.preventDefault();
-        const newItem = { name: item, id: new Date() };
-        setItems([...items, newItem]);
+        const newItem = { name: item, id: uuidv4() };
+        const updatedListItems = [...items];
+        updatedListItems.unshift(newItem);
+        setItems(updatedListItems);
         setItem('');
+    };
+
+    const removeItemHandler = (id) => {
+        const updatedList = items.filter((item) => item.id !== id);
+        setItems(updatedList);
     };
 
     return (
@@ -43,7 +51,7 @@ const CreateList = () => {
                         {title}
                     </h1>
                 )}
-                <List listItems={items} />
+                <List listItems={items} removeItem={removeItemHandler} />
             </div>
         </div>
     );
