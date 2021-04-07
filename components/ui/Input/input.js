@@ -7,7 +7,7 @@ const input = (props) => {
             <input
                 id={id}
                 type="text"
-                class="mx-auto form-input block mt-1 rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-400 focus:ring-opacity-50"
+                className="mx-auto form-input block mt-1 rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-400 focus:ring-opacity-50"
                 onChange={changed}
                 value={value}
             />
