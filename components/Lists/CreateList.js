@@ -1,28 +1,25 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import Input from '../ui/Input/input';
 import Button from '../ui/Button/Button';
 import List from './List';
+import ItemsContext from '../../store/items-context';
 
 const CreateList = () => {
+    const itemsCtx = useContext(ItemsContext);
+
     const [title, setTitle] = useState();
     const [item, setItem] = useState('');
-    const [items, setItems] = useState([]);
 
     const onSubmitItem = (e) => {
         e.preventDefault();
         const newItem = { name: item, id: uuidv4() };
-        const updatedListItems = [...items];
-        updatedListItems.unshift(newItem);
-        setItems(updatedListItems);
+        itemsCtx.addItem(newItem);
         setItem('');
     };
 
-    const removeItemHandler = (id) => {
-        const updatedList = items.filter((item) => item.id !== id);
-        setItems(updatedList);
-    };
+    const removeItemHandler = (id) => itemsCtx.removeItem(id);
 
     return (
         <div className="md:flex">
@@ -51,7 +48,10 @@ const CreateList = () => {
                         {title}
                     </h1>
                 )}
-                <List listItems={items} removeItem={removeItemHandler} />
+                <List
+                    listItems={itemsCtx.items}
+                    removeItem={removeItemHandler}
+                />
             </div>
         </div>
     );
