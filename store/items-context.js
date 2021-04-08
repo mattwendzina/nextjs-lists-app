@@ -23,16 +23,14 @@ export const ItemsContextProvider = (props) => {
     };
 
     const updateItemHandler = (value, id) => {
-        setItems(() => {
-            const itemToUpdate = items.find((item) => item.id === id);
-            const newItemsList = items.map((item) => {
-                if (item['id'] === itemToUpdate.id) {
+        setItems(
+            items.map((item) => {
+                if (item['id'] === id) {
                     return { ...item, name: value };
                 }
                 return item;
-            });
-            return newItemsList;
-        });
+            })
+        );
     };
 
     const context = {
