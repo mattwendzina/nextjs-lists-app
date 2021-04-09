@@ -41,7 +41,10 @@ const ListItem = ({ title, removeItem, id }) => {
                             'onchange';
                             updateText(e.target.value);
                         }}
-                        onBlur={() => toggleUpdateItem(false)}
+                        onBlur={(e) => {
+                            updateText(e.target.value);
+                            toggleUpdateItem(false);
+                        }}
                         autoFocus={true}
                     />
                 </form>
