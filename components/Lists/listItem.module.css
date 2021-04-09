@@ -12,13 +12,15 @@
     opacity: 1;
 }
 
-.modal {
-    width: 500px;
-    height: 500px;
-    background: black;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 50%;
+.input {
+    padding: 0;
+}
+
+.input:focus {
+    box-shadow: none;
+    border-bottom: solid 1px #0d9488;
+}
+.input:hover {
+    box-shadow: none;
+    border-bottom: solid 1px #0d9488;
 }
