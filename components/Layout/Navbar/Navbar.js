@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -7,12 +7,13 @@ const Navbar = (props) => {
     const router = useRouter();
 
     useEffect(() => {
-        console.log('router.pathname', router.pathname);
         switch (router.pathname) {
             case '/createList':
                 return setTitle('Create List');
             case '/lists':
                 return setTitle('All Lists');
+            case '/lists/[title]/[listId]':
+                return setTitle(`${router.query.title}`);
             default:
                 return setTitle('');
         }
