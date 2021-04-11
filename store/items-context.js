@@ -5,6 +5,8 @@ const ItemsContext = createContext({
     addItem: (item) => {},
     removeItem: (itemId) => {},
     updateItem: (itemId) => {},
+    updateList: (list) => {},
+    clearList: () => {},
 });
 
 export const ItemsContextProvider = (props) => {
@@ -20,6 +22,10 @@ export const ItemsContextProvider = (props) => {
 
     const removeItemHandler = (itemId) => {
         setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    };
+
+    const clearListHandler = () => {
+        setItems([]);
     };
 
     const updateItemHandler = (value, id) => {
@@ -49,11 +55,23 @@ export const ItemsContextProvider = (props) => {
         });
     };
 
+    const updateListHandler = async (list) => {
+        const response = await fetch('/api/updateList', {
+            method: 'POST',
+            body: JSON.stringify(list),
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+        console.log('RESULT: ', data);
+    };
+
     const context = {
         items: items,
         addItem: addItemHandler,
         removeItem: removeItemHandler,
         updateItem: updateItemHandler,
+        clearList: clearListHandler,
+        updateList: updateListHandler,
     };
 
     return (
