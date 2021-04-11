@@ -1,4 +1,4 @@
-const input = (props) => {
+const Input = (props) => {
     const { title, changed, id, value } = props;
 
     return (
@@ -15,4 +15,4 @@ const input = (props) => {
     );
 };
 
-export default input;
+export default Input;
