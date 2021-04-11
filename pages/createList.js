@@ -1,4 +1,4 @@
-import CreateList from '../components/Lists/CreateList';
+import CreateList from '../components/CreateList/index';
 
 const createList = () => {
     return <CreateList />;
