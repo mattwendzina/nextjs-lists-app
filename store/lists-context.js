@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
+import ItemsContext from './items-context';
 
 const ListsContext = createContext({
     allLists: [],
@@ -8,6 +9,8 @@ const ListsContext = createContext({
 });
 
 export const ListsContextProvider = (props) => {
+    const itemsCtx = useContext(ItemsContext);
+
     const [lists, setLists] = useState([]);
     const [selectedList, setSelectedList] = useState([]);
 
@@ -17,6 +20,7 @@ export const ListsContextProvider = (props) => {
         const list = lists.find((list) => list._id === id);
         if (list) {
             setSelectedList(list);
+            itemsCtx.addItems(list.items);
         }
     };
 
