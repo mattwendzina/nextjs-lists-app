@@ -91,9 +91,7 @@ const SelectedList = () => {
 
         const data = await response.json();
 
-        console.log('DATA: ', data);
-
-        updateSelectedList(updatedList);
+        itemsCtx.addItem(newItemToAdd);
         setNewItem('');
     };
 
@@ -155,24 +153,24 @@ const SelectedList = () => {
                     </div>
                 </form>
             ) : (
-                <form
-                    onSubmit={addNewItem}
-                    className="text-center flex justify-center items-end p-4"
-                >
-                    <Input
-                        title="Add a new item"
-                        id="listItem"
-                        changed={(e) => {
-                            setNewItem(e.target.value);
-                        }}
-                        value={newItem}
-                    />
-
-                    <div>
-                        <Button title="Submit" classes={['mb-0']} />
-                    </div>
-                </form>
             )} */}
+            <form
+                onSubmit={addNewItem}
+                className="text-center flex justify-center items-end p-4"
+            >
+                <Input
+                    title="Add a new item"
+                    id="listItem"
+                    changed={(e) => {
+                        setNewItem(e.target.value);
+                    }}
+                    value={newItem}
+                />
+
+                <div>
+                    <Button title="Submit" classes={['mb-0']} />
+                </div>
+            </form>
 
             {/* {itemsCtx.items && ( */}
             <List listItems={itemsCtx.items} removeItem={itemsCtx.removeItem} />
