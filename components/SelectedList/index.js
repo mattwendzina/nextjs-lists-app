@@ -7,8 +7,9 @@ import ItemsContext from '../../store/items-context';
 import Input from '../ui/Input/Input';
 import Button from '../ui/Button/Button';
 import classes from './index.module.css';
+import List from '../CreateList/List';
 
-const List = () => {
+const SelectedList = () => {
     const router = useRouter();
     const listsCtx = useContext(ListsContext);
     const itemsCtx = useContext(ItemsContext);
@@ -33,6 +34,7 @@ const List = () => {
             listsCtx.setLists(allLists);
         }
 
+        // NOTE - selectList will in turn call addItems in the itemsCtx so that items can be edited through items store
         listsCtx.selectList(listId);
     }, [listId, listsCtx.allLists]);
 
@@ -116,10 +118,12 @@ const List = () => {
         updateSelectedList(updatedList);
     };
 
+    console.log('selectedList.items', selectedList.items);
+    // console.log('itemsCtx.removeItem', itemsCtx.removeItem);
     return (
         <div>
             {/* Conditional based on whether user wants to update an item or add a new one. */}
-            {itemToUpdate.name ? (
+            {/* {itemToUpdate.name ? (
                 <form
                     onSubmit={updateList}
                     className="text-center flex justify-center items-end p-4"
@@ -168,9 +172,13 @@ const List = () => {
                         <Button title="Submit" classes={['mb-0']} />
                     </div>
                 </form>
-            )}
+            )} */}
 
-            <ul className="text-center p-2 w-max mx-auto">
+            {/* {itemsCtx.items && ( */}
+            <List listItems={itemsCtx.items} removeItem={itemsCtx.removeItem} />
+            {/* )} */}
+
+            {/* <ul className="text-center p-2 w-max mx-auto">
                 {selectedList.items.map((item) => (
                     <li key={item.id} className={liClassNames}>
                         <div>
@@ -192,9 +200,9 @@ const List = () => {
                         </div>
                     </li>
                 ))}
-            </ul>
+            </ul> */}
         </div>
     );
 };
 
-export default List;
+export default SelectedList;
