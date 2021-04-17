@@ -1,4 +1,4 @@
-import List from '../../../components/List/index';
+import List from '../../../components/SelectedList/index';
 
 const selectedList = () => {
     return <List />;
