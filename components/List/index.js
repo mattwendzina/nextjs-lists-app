@@ -10,13 +10,14 @@ import classes from './index.module.css';
 
 const List = () => {
     const router = useRouter();
-    const [selectedList, updateSelectedList] = useState([]);
-    const [itemToUpdate, setItemToUpdate] = useState({ name: '', id: '' });
-    const [newItem, setNewItem] = useState('');
     const listsCtx = useContext(ListsContext);
     const itemsCtx = useContext(ItemsContext);
 
+    const [itemToUpdate, setItemToUpdate] = useState({ name: '', id: '' });
+    const [newItem, setNewItem] = useState('');
+
     const { listId } = router.query;
+    const selectedList = listsCtx.selectedList;
 
     useEffect(async () => {
         // Router.query always returns empty on first render, so return out of function
@@ -30,14 +31,10 @@ const List = () => {
             const { allLists } = await response.json();
             // Set all lists in context
             listsCtx.setLists(allLists);
-            const list = allLists.find((list) => list._id === listId);
-            // Set list in local State
-            return updateSelectedList(list);
         }
 
-        const list = listsCtx.allLists.find((list) => list._id === listId);
-        updateSelectedList(list);
-    }, [listId]);
+        listsCtx.selectList(listId);
+    }, [listId, listsCtx.allLists]);
 
     if (selectedList.length === 0) {
         return <p className="p-2 text-xl text-center">Loading...</p>;
