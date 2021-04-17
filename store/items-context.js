@@ -3,6 +3,7 @@ import { createContext, useState } from 'react';
 const ItemsContext = createContext({
     items: [],
     addItem: (item) => {},
+    addItems: (items) => {},
     removeItem: (itemId) => {},
     updateItem: (itemId) => {},
     updateList: (list) => {},
@@ -19,6 +20,8 @@ export const ItemsContextProvider = (props) => {
             return newItemsList;
         });
     };
+
+    const addItemsHandler = (items) => setItems(items);
 
     const removeItemHandler = (itemId) => {
         setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
@@ -68,6 +71,7 @@ export const ItemsContextProvider = (props) => {
     const context = {
         items: items,
         addItem: addItemHandler,
+        addItems: addItemsHandler,
         removeItem: removeItemHandler,
         updateItem: updateItemHandler,
         clearList: clearListHandler,
