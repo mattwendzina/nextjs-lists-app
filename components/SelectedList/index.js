@@ -1,20 +1,25 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { FiDelete } from 'react-icons/fi';
+import moment from 'moment';
 import ListsContext from '../../store/lists-context';
 import ItemsContext from '../../store/items-context';
 import Input from '../ui/Input/Input';
 import Button from '../ui/Button/Button';
-import classes from './index.module.css';
 import List from '../CreateList/List';
+
+const hasItemChanged = (list, value, id) => {
+    const item = list.items
+        .filter((item) => item.id === id)
+        .map((item) => item.name);
+    return item[0] === value ? true : false;
+};
 
 const SelectedList = () => {
     const router = useRouter();
     const listsCtx = useContext(ListsContext);
     const itemsCtx = useContext(ItemsContext);
 
-    const [itemToUpdate, setItemToUpdate] = useState({ name: '', id: '' });
     const [newItem, setNewItem] = useState('');
 
     const { listId } = router.query;
@@ -42,40 +47,39 @@ const SelectedList = () => {
         return <p className="p-2 text-xl text-center">Loading...</p>;
     }
 
-    const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center`;
-
-    const updateList = (e) => {
-        e.preventDefault();
-
-        // Filter for the itme to selected, then updates
+    const updateList = (value, id) => {
+        if (hasItemChanged(selectedList, value, id)) {
+            return;
+        }
+        // Filter for the itme to selected, then update
         const updatedListItems = selectedList.items.map((item) => {
-            if (item.id === itemToUpdate.id) {
-                return { ...item, name: itemToUpdate.name };
+            if (item.id === id) {
+                return {
+                    ...item,
+                    name: value,
+                };
             }
             return item;
         });
 
-        // Update the list in state
-        updateSelectedList((prevState) => {
-            const updatedList = { ...prevState, items: updatedListItems };
+        const updatedList = {
+            ...listsCtx.selectedList,
+            items: updatedListItems,
+        };
 
-            // TODO - Add in some error handling so that if it fails, don't update state, but send a failure message to user
-            // Update in database
-            itemsCtx.updateList(updatedList);
-
-            // Update in state
-            return updatedList;
-        });
-
-        // Clear the input button
-        setItemToUpdate({ name: '', id: '' });
+        listsCtx.updateList(updatedList);
     };
 
     const addNewItem = async (e) => {
         e.preventDefault();
+
+        const date = moment().format('MMMM Do YYYY, h:mm:ss a');
+
         const newItemToAdd = {
             name: newItem,
             id: uuidv4(),
+            checked: false,
+            date: date,
         };
 
         const updatedListItems = [...selectedList.items];
@@ -83,14 +87,9 @@ const SelectedList = () => {
         const updatedList = { ...selectedList, items: updatedListItems };
 
         // Add to databse
-        const response = await fetch('/api/updateList', {
-            method: 'POST',
-            body: JSON.stringify(updatedList),
-            headers: { 'Content-Type': 'application/json' },
-        });
+        listsCtx.updateList(updatedList);
 
-        const data = await response.json();
-
+        // Update UI
         itemsCtx.addItem(newItemToAdd);
         setNewItem('');
     };
@@ -103,57 +102,31 @@ const SelectedList = () => {
         const updatedList = { ...selectedList, items: updatedListItems };
 
         // Remove item from databse
-        const response = await fetch('/api/updateList', {
-            method: 'POST',
-            body: JSON.stringify(updatedList),
-            headers: { 'Content-Type': 'application/json' },
-        });
+        listsCtx.updateList(updatedList);
 
-        const data = await response.json();
-
-        console.log('DATA: ', data);
-
-        updateSelectedList(updatedList);
+        // Update UI
+        itemsCtx.removeItem(id);
     };
 
-    console.log('selectedList.items', selectedList.items);
-    // console.log('itemsCtx.removeItem', itemsCtx.removeItem);
+    const toggleChecked = (checked, id) => {
+        const updatedListItems = selectedList.items.map((item, i) => {
+            if (item.id === id) {
+                return {
+                    ...item,
+                    checked: !checked,
+                };
+            }
+            return item;
+        });
+
+        const updatedList = { ...selectedList, items: updatedListItems };
+
+        // Update checked status
+        listsCtx.updateList(updatedList);
+    };
+
     return (
         <div>
-            {/* Conditional based on whether user wants to update an item or add a new one. */}
-            {/* {itemToUpdate.name ? (
-                <form
-                    onSubmit={updateList}
-                    className="text-center flex justify-center items-end p-4"
-                >
-                    <Input
-                        title="Update item"
-                        id="listItem"
-                        changed={(e) => {
-                            if (itemToUpdate.name) {
-                                setItemToUpdate((prevState) => {
-                                    return {
-                                        ...prevState,
-                                        name: e.target.value,
-                                    };
-                                });
-                            }
-                        }}
-                        value={itemToUpdate.name}
-                    />
-
-                    <div>
-                        <Button title="Update" classes={['mb-0']} />
-                        <Button
-                            title="Cancel"
-                            type="button"
-                            classes={['mb-0']}
-                            click={() => setItemToUpdate({ name: '', id: '' })}
-                        />
-                    </div>
-                </form>
-            ) : (
-            )} */}
             <form
                 onSubmit={addNewItem}
                 className="text-center flex justify-center items-end p-4"
@@ -172,33 +145,14 @@ const SelectedList = () => {
                 </div>
             </form>
 
-            {/* {itemsCtx.items && ( */}
-            <List listItems={itemsCtx.items} removeItem={itemsCtx.removeItem} />
-            {/* )} */}
-
-            {/* <ul className="text-center p-2 w-max mx-auto">
-                {selectedList.items.map((item) => (
-                    <li key={item.id} className={liClassNames}>
-                        <div>
-                            <p
-                                className="text-lg"
-                                onClick={() =>
-                                    setItemToUpdate({
-                                        name: item.name,
-                                        id: item.id,
-                                    })
-                                }
-                            >
-                                {item.name}
-                            </p>
-                            <FiDelete
-                                className={classes.icon}
-                                onClick={() => removeItem(item.id)}
-                            />
-                        </div>
-                    </li>
-                ))}
-            </ul> */}
+            <List
+                listItems={itemsCtx.items}
+                changed={itemsCtx.updateItem}
+                blur={updateList}
+                submit={updateList}
+                remove={removeItem}
+                toggleChecked={toggleChecked}
+            />
         </div>
     );
 };
