@@ -30,7 +30,9 @@ const ListItem = ({
         toggleEdit(false);
         const updatedItem = e.target[0].value;
         // This check is here because createList only uses this method to update the UI,
-        // the actual list page uses this to submit a live update to the database.
+        // the actual list page uses this to submit a live update to the database. As a result
+        // it passes a 'submit' prop down (as a boolean) to denote it should be submitted to
+        // database to update.
         submit && submit(updatedItem, id);
     };
 
