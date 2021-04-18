@@ -6,8 +6,7 @@ const ItemsContext = createContext({
     addItems: (items) => {},
     removeItem: (itemId) => {},
     updateItem: (itemId) => {},
-    updateList: (list) => {},
-    clearList: () => {},
+    clearItems: () => {},
 });
 
 export const ItemsContextProvider = (props) => {
@@ -27,20 +26,19 @@ export const ItemsContextProvider = (props) => {
         setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
     };
 
-    const clearListHandler = () => {
-        setItems([]);
-    };
+    const clearItemsHandler = () => setItems([]);
 
-    const updateItemHandler = (value, id) => {
+    const updateItemHandler = (value, id, action) => {
         setItems((prevState) => {
             const updatedItems = items
                 .map((item, idx) => {
                     if (item['id'] === id) {
-                        // Convulted but... Need to deal with scenario where a user has deleted a word. At that state,
-                        // they may start typing a new one, or click away expecting it to be deleted. We need to look at the prevState
+                        // Convulted but... Need to deal with scenario where a user has deleted a word using backspace (ie, has hit backspace
+                        // enough times to remove the word). At that state, they may start typing a new one,
+                        // or click away expecting it to be deleted. We need to look at the prevState
                         // so we can compare with the next incoming value. IE, if prevState is an empty string, and the current value is
                         // an empty string then they must want to delete - in which case, come into this if block. If the value is a
-                        // character though, then they must be adding a new item.
+                        // character though, then they must have started typing a new item.
                         if (prevState[idx].name === '' && value === '') {
                             return { ...item, name: value, removeItem: true };
                         }
@@ -58,24 +56,13 @@ export const ItemsContextProvider = (props) => {
         });
     };
 
-    const updateListHandler = async (list) => {
-        const response = await fetch('/api/updateList', {
-            method: 'POST',
-            body: JSON.stringify(list),
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await response.json();
-        console.log('RESULT: ', data);
-    };
-
     const context = {
         items: items,
         addItem: addItemHandler,
         addItems: addItemsHandler,
         removeItem: removeItemHandler,
         updateItem: updateItemHandler,
-        clearList: clearListHandler,
-        updateList: updateListHandler,
+        clearItems: clearItemsHandler,
     };
 
     return (
