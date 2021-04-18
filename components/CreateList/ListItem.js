@@ -1,49 +1,80 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { FiDelete } from 'react-icons/fi';
+import { IoCheckbox } from 'react-icons/io5';
 import classes from './listItem.module.css';
 
-import ItemsContext from '../../store/items-context';
+const ListItem = ({
+    title,
+    id,
+    changed,
+    blur,
+    submit,
+    remove,
+    checked,
+    toggleChecked,
+}) => {
+    const [edit, toggleEdit] = useState(false);
+    const [localChecked, updateLocalChecked] = useState();
 
-const ListItem = ({ title, removeItem, id }) => {
-    const [updateItem, toggleUpdateItem] = useState(false);
-    const itemsCtx = useContext(ItemsContext);
+    useEffect(() => {
+        // Make sure that local toggle status gets synced with changes from DB
+        updateLocalChecked(checked);
+    }, [checked]);
 
-    const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center`;
+    const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center text-lg`;
 
-    const inputClassNames = `${classes.input} text-center focus:shadow-none border-none focus:outline-none b`;
+    const inputClassNames = `${classes.input} text-center focus:shadow-none border-none focus:outline-none b text-lg`;
 
-    const editItem = (e) => {
+    const updateItem = (e, id) => {
         e.preventDefault();
-        toggleUpdateItem(false);
+        toggleEdit(false);
+        const updatedItem = e.target[0].value;
+        // This check is here because createList only uses this method to update the UI,
+        // the actual list page uses this to submit a live update to the database.
+        submit && submit(updatedItem, id);
     };
 
-    const updateText = (value) => {
-        itemsCtx.updateItem(value, id);
+    // Bit of duplication, but is a way of ensuring that the UI is updated instantly, while DB gets updated
+    const toggleLocalChecked = (checked) => {
+        updateLocalChecked(!checked);
     };
 
     return (
         <li className={liClassNames}>
-            {!updateItem ? (
+            {!edit ? (
                 <div>
-                    <p onClick={() => toggleUpdateItem(true)}>{title}</p>
+                    <IoCheckbox
+                        className={
+                            localChecked
+                                ? classes.icon1__checked
+                                : classes.icon1__unChecked
+                        }
+                        onClick={() => {
+                            toggleChecked(checked, id);
+                            toggleLocalChecked(checked);
+                        }}
+                    />
+                    <p
+                        className={localChecked ? 'line-through' : null}
+                        onClick={() => toggleEdit(true)}
+                    >
+                        {title}
+                    </p>
                     <FiDelete
                         className={classes.icon}
-                        onClick={() => removeItem(id)}
+                        onClick={() => remove(id)}
                     />
                 </div>
             ) : (
-                <form onSubmit={editItem}>
+                <form onSubmit={(e) => updateItem(e, id)}>
                     <input
                         className={inputClassNames}
                         type="text"
                         value={title}
-                        onChange={(e) => {
-                            'onchange';
-                            updateText(e.target.value);
-                        }}
+                        onChange={(e) => changed(e.target.value, id)}
                         onBlur={(e) => {
-                            updateText(e.target.value);
-                            toggleUpdateItem(false);
+                            blur(e.target.value, id);
+                            toggleEdit(false);
                         }}
                         autoFocus={true}
                     />
