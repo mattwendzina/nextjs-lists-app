@@ -1,14 +1,33 @@
-.icon {
+.icon,
+.icon1__unChecked,
+.icon1__checked {
     color: #0d9488;
     opacity: 0;
     transition: 300ms ease-in-out;
-    margin-left: 0.5rem;
     position: absolute;
-    left: 100%;
     top: 50%;
     transform: translateY(-50%);
 }
-.listItem:hover .icon {
+.icon {
+    left: 100%;
+    margin-left: 0.5rem;
+}
+.icon1__checked,
+.icon1__unChecked {
+    border: solid 1px #0d9488;
+    right: 100%;
+    margin-right: 0.5rem;
+    border-radius: 5px;
+}
+
+.icon1__unChecked {
+    background: white;
+    color: white;
+}
+
+.listItem:hover .icon,
+.listItem:hover .icon1__unChecked,
+.listItem:hover .icon1__checked {
     opacity: 1;
 }
 
