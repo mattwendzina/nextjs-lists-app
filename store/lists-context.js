@@ -6,6 +6,7 @@ const ListsContext = createContext({
     selectedList: [],
     setLists: () => {},
     selectList: () => {},
+    updateList: () => {},
 });
 
 export const ListsContextProvider = (props) => {
@@ -14,7 +15,7 @@ export const ListsContextProvider = (props) => {
     const [lists, setLists] = useState([]);
     const [selectedList, setSelectedList] = useState([]);
 
-    const updateListsHandler = (lists) => setLists(lists);
+    const setListsHandler = (lists) => setLists(lists);
 
     const selectListHandler = (id) => {
         const list = lists.find((list) => list._id === id);
@@ -24,11 +25,27 @@ export const ListsContextProvider = (props) => {
         }
     };
 
+    const updateListHandler = async (list) => {
+        const response = await fetch('/api/updateList', {
+            method: 'POST',
+            body: JSON.stringify(list),
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await response.json();
+
+        console.log('RESULT: ', data);
+        // Make sure you pull latest version of lists with update
+        const lists = await fetch('/api/allLists');
+        const { allLists } = await lists.json();
+        setLists(allLists);
+    };
+
     const context = {
         allLists: lists,
         selectedList: selectedList,
-        setLists: updateListsHandler,
+        setLists: setListsHandler,
         selectList: selectListHandler,
+        updateList: updateListHandler,
     };
 
     return (
