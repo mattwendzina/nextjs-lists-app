@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import Input from '../ui/Input/Input';
@@ -11,6 +11,8 @@ const CreateList = () => {
 
     const [title, setTitle] = useState('');
     const [item, setItem] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+
     useEffect(() => {
         // Ensure list is cleared before loading page. (State for displaying
         // list items is shared with displaying individual lists)
@@ -40,9 +42,13 @@ const CreateList = () => {
         });
         const data = await result.json();
         console.log('DATA:', data);
-        itemsCtx.clearList();
+        itemsCtx.clearItems();
         setTitle('');
     };
+
+    if (isLoading) {
+        return <p className="text-center text-xl p-2"> Loading...</p>;
+    }
 
     return (
         <div className="md:flex">
@@ -75,7 +81,9 @@ const CreateList = () => {
 
                 <List
                     listItems={itemsCtx.items}
-                    removeItem={removeItemHandler}
+                    remove={removeItemHandler}
+                    changed={itemsCtx.updateItem}
+                    blur={itemsCtx.updateItem}
                 />
 
                 {itemsCtx.items.length > 0 && (
