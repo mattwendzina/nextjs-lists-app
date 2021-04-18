@@ -11,6 +11,12 @@ const CreateList = () => {
 
     const [title, setTitle] = useState('');
     const [item, setItem] = useState('');
+    useEffect(() => {
+        // Ensure list is cleared before loading page. (State for displaying
+        // list items is shared with displaying individual lists)
+        itemsCtx.clearItems();
+        setIsLoading(false);
+    }, []);
 
     const onSubmitItem = (e) => {
         e.preventDefault();
