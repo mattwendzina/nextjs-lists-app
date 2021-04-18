@@ -1,7 +1,7 @@
 import ListItem from './ListItem';
 
 const list = (props) => {
-    const { listItems, removeItem } = props;
+    const { listItems, remove, changed, blur, submit, toggleChecked } = props;
 
     return (
         <ul className="text-center p-2">
@@ -11,7 +11,12 @@ const list = (props) => {
                         key={listItem.id}
                         id={listItem.id}
                         title={listItem.name}
-                        removeItem={removeItem}
+                        checked={listItem.checked}
+                        remove={remove}
+                        changed={changed}
+                        blur={blur}
+                        submit={submit}
+                        toggleChecked={toggleChecked}
                     />
                 ))}
         </ul>
