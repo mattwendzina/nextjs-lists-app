@@ -1,4 +1,4 @@
-import ListItem from './ListItem';
+import ListItem from '../ListItem/ListItem';
 
 const list = (props) => {
     const { listItems, remove, changed, blur, submit, toggleChecked } = props;

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Input from '../ui/Input/Input';
 import Button from '../ui/Button/Button';
-import List from './List';
+import List from '../ui/List/List';
 import ItemsContext from '../../store/items-context';
 
 const CreateList = () => {

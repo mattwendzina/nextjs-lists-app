@@ -6,7 +6,7 @@ import ListsContext from '../../store/lists-context';
 import ItemsContext from '../../store/items-context';
 import Input from '../ui/Input/Input';
 import Button from '../ui/Button/Button';
-import List from '../CreateList/List';
+import List from '../ui/List/List';
 
 const hasItemChanged = (list, value, id) => {
     const item = list.items
