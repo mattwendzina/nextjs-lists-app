@@ -1,13 +1,15 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import ListsContext from '../../../store/lists-context';
+import NavItem from '../NavItem/NavItem';
 
 const Navbar = (props) => {
     const listsCtx = useContext(ListsContext);
     const [title, setTitle] = useState('');
     const [edit, toggleEdit] = useState(false);
     const router = useRouter();
+    const navItemClasses =
+        'hover:text-yellow-red-900 duration-300 text-white p-1 transition text-base sm:text-lg';
 
     useEffect(() => {
         switch (router.pathname) {
@@ -42,13 +44,13 @@ const Navbar = (props) => {
 
     return (
         <nav className="relative ">
-            <div className="inset-center text-white text-3xl ">
+            <div className="inset-center text-white text-base sm:text-3xl ">
                 {!edit ? (
                     <p onClick={() => toggleEdit(true)}>{title}</p>
                 ) : (
                     <form onSubmit={(e) => updateTitle(e)}>
                         <input
-                            className="text-center border-none text-3xl bg-teal-600 focus:ring-teal-600"
+                            className="text-center border-none git  focus:ring-teal-600"
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
@@ -61,23 +63,19 @@ const Navbar = (props) => {
                     </form>
                 )}
             </div>
-            <div className="flex p-3 gap-x-2 bg-teal-600 justify-between items-center">
-                <Link href="/">
-                    <a className="hover:text-yellow-red-900 duration-300 text-white p-1 transition">
-                        Home
-                    </a>
-                </Link>
-                <div>
-                    <Link href="/lists">
-                        <a className="hover:text-yellow-red-900 duration-300 text-white px-2 transition">
-                            All Lists
-                        </a>
-                    </Link>
-                    <Link href="/createList">
-                        <a className="hover:text-yellow-red-900 duration-300 text-white px-2 transition">
-                            Create
-                        </a>
-                    </Link>
+            <div className="flex p-3 gap-x-2 bg-teal-600 justify-between items-center ">
+                <NavItem link={'/'} title="Home" classes={navItemClasses} />
+                <div className="flex-col sm:flex-row">
+                    <NavItem
+                        link={'/lists'}
+                        title="All Lists"
+                        classes={navItemClasses}
+                    />
+                    <NavItem
+                        link={'/createList'}
+                        title="Create"
+                        classes={navItemClasses}
+                    />
                 </div>
             </div>
             <div>{props.children}</div>
