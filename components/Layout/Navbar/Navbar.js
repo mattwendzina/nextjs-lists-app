@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import ListsContext from '../../../store/lists-context';
 import NavItem from '../NavItem/NavItem';
 
-const Navbar = (props) => {
+const Navbar = ({ children, mobile, click }) => {
     const listsCtx = useContext(ListsContext);
     const [title, setTitle] = useState('');
     const [edit, toggleEdit] = useState(false);
@@ -65,20 +65,24 @@ const Navbar = (props) => {
             </div>
             <div className="flex p-3 gap-x-2 bg-teal-600 justify-between items-center ">
                 <NavItem link={'/'} title="Home" classes={navItemClasses} />
-                <div className="flex-col sm:flex-row">
-                    <NavItem
-                        link={'/lists'}
-                        title="All Lists"
-                        classes={navItemClasses}
-                    />
-                    <NavItem
-                        link={'/createList'}
-                        title="Create"
-                        classes={navItemClasses}
-                    />
-                </div>
+                {mobile ? (
+                    <div className="flex-col sm:flex-row">
+                        <NavItem
+                            link={'/lists'}
+                            title="All Lists"
+                            classes={navItemClasses}
+                        />
+                        <NavItem
+                            link={'/createList'}
+                            title="Create"
+                            classes={navItemClasses}
+                        />
+                    </div>
+                ) : (
+                    <div onClick={click}> Ham </div>
+                )}
             </div>
-            <div>{props.children}</div>
+            <div>{children}</div>
         </nav>
     );
 };
