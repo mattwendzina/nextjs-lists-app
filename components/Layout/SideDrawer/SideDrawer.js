@@ -1,4 +1,5 @@
 import NavItem from '../NavItem/NavItem';
+import { IoCloseOutline } from 'react-icons/io5';
 
 const SideDrawer = ({ click }) => {
     const navClasses =
@@ -10,10 +11,10 @@ const SideDrawer = ({ click }) => {
         <div className={sideDrawerClasses}>
             <ul className="flex flex-col justify-center items-center p-2">
                 <div
-                    className="text-white text-2xl absolute top-1 right-4"
+                    className="text-white text-2xl absolute top-3 right-3"
                     onClick={click}
                 >
-                    x
+                    <IoCloseOutline />
                 </div>
                 <NavItem link={'/'} title="Home" classes={navClasses} />
                 <NavItem

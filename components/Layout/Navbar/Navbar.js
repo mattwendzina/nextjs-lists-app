@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
+import { HiOutlineMenu } from 'react-icons/hi';
+
 import ListsContext from '../../../store/lists-context';
 import NavItem from '../NavItem/NavItem';
 
@@ -65,22 +67,23 @@ const Navbar = ({ children, mobile, click }) => {
             </div>
             <div className="flex p-3 gap-x-2 bg-teal-600 justify-between items-center ">
                 <NavItem link={'/'} title="Home" classes={navItemClasses} />
-                {mobile ? (
-                    <div className="flex-col sm:flex-row">
-                        <NavItem
-                            link={'/lists'}
-                            title="All Lists"
-                            classes={navItemClasses}
-                        />
-                        <NavItem
-                            link={'/createList'}
-                            title="Create"
-                            classes={navItemClasses}
-                        />
-                    </div>
-                ) : (
-                    <div onClick={click}> Ham </div>
-                )}
+
+                <div className="sm:flex-row hidden xs:flex">
+                    <NavItem
+                        link={'/lists'}
+                        title="All Lists"
+                        classes={navItemClasses}
+                    />
+                    <NavItem
+                        link={'/createList'}
+                        title="Create"
+                        classes={navItemClasses}
+                    />
+                </div>
+
+                <div onClick={click} className="xs:hidden">
+                    <HiOutlineMenu className="text-white text-lg" />
+                </div>
             </div>
             <div>{children}</div>
         </nav>

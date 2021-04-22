@@ -60,6 +60,9 @@ module.exports = {
                 lexend: ['Lexend', 'Helvetica', 'Arial', 'sans-serif'],
             },
         },
+        screens: {
+            xs: '480px',
+        },
     },
     variants: {
         extend: {},
