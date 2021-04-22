@@ -43,10 +43,25 @@ module.exports = {
                     800: '#DCDEE5',
                     900: '#D8DBE2',
                 },
+                charcoal: {
+                    50: '#557C93',
+                    100: '#50768C',
+                    200: '#4B7085',
+                    300: '#456A7E',
+                    400: '#406477',
+                    500: '#3B5E6F',
+                    600: '#365868',
+                    700: '#305261',
+                    800: '#2B4C5A',
+                    900: '#264653',
+                },
             },
             fontFamily: {
                 lexend: ['Lexend', 'Helvetica', 'Arial', 'sans-serif'],
             },
+        },
+        screens: {
+            xs: '480px',
         },
     },
     variants: {
