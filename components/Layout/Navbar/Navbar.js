@@ -1,17 +1,21 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { HiOutlineMenu } from 'react-icons/hi';
+import { motion } from 'framer-motion';
+import classes from './navbar.module.css';
 
 import ListsContext from '../../../store/lists-context';
 import NavItem from '../NavItem/NavItem';
 
-const Navbar = ({ children, mobile, click }) => {
+const Navbar = ({ children, click }) => {
     const listsCtx = useContext(ListsContext);
     const [title, setTitle] = useState('');
     const [edit, toggleEdit] = useState(false);
     const router = useRouter();
     const navItemClasses =
         'hover:text-yellow-red-900 duration-300 text-white p-1 transition text-base sm:text-lg';
+
+    const menuClasses = `${classes.menu} xs:hidden`;
 
     useEffect(() => {
         switch (router.pathname) {
@@ -81,9 +85,13 @@ const Navbar = ({ children, mobile, click }) => {
                     />
                 </div>
 
-                <div onClick={click} className="xs:hidden">
+                <motion.div
+                    layoutId="drawer"
+                    onClick={click}
+                    className={menuClasses}
+                >
                     <HiOutlineMenu className="text-white text-lg" />
-                </div>
+                </motion.div>
             </div>
             <div>{children}</div>
         </nav>
