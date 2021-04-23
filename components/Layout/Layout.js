@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import Navbar from './Navbar/Navbar';
 import SideDrawer from './SideDrawer/SideDrawer';
 
@@ -9,8 +10,10 @@ const Layout = (props) => {
         <div className="flex flex-col h-screen">
             <div>
                 <Navbar
-                    mobile={showDrawer}
-                    click={() => toggleShowDrawer(!showDrawer)}
+                    click={() => {
+                        console.log('clicked');
+                        toggleShowDrawer(!showDrawer);
+                    }}
                 />
                 {showDrawer && (
                     <SideDrawer click={() => toggleShowDrawer(!showDrawer)} />

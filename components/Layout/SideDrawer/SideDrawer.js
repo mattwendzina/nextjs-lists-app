@@ -1,5 +1,6 @@
 import NavItem from '../NavItem/NavItem';
 import { IoCloseOutline } from 'react-icons/io5';
+import { motion } from 'framer-motion';
 
 const SideDrawer = ({ click }) => {
     const navClasses =
@@ -8,7 +9,7 @@ const SideDrawer = ({ click }) => {
         'absolute top-0 bottom-0 left-0 right-0 bg-charcoal-600 z-10 h-full';
 
     return (
-        <div className={sideDrawerClasses}>
+        <motion.div className={sideDrawerClasses} layoutId="drawer">
             <ul className="flex flex-col justify-center items-center p-2">
                 <div
                     className="text-white text-2xl absolute top-3 right-3"
@@ -16,19 +17,26 @@ const SideDrawer = ({ click }) => {
                 >
                     <IoCloseOutline />
                 </div>
-                <NavItem link={'/'} title="Home" classes={navClasses} />
+                <NavItem
+                    link={'/'}
+                    title="Home"
+                    classes={navClasses}
+                    click={click}
+                />
                 <NavItem
                     link={'/lists'}
                     title="All Lists"
                     classes={navClasses}
+                    click={click}
                 />
                 <NavItem
                     link={'/createList'}
                     title="Create"
                     classes={navClasses}
+                    click={click}
                 />
             </ul>
-        </div>
+        </motion.div>
     );
 };
 
