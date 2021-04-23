@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import ListsContext from '../../store/lists-context';
 
@@ -26,7 +27,9 @@ const AllLists = () => {
             <ul>
                 {listNames.map((list) => {
                     return (
-                        <li
+                        <motion.li
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
                             key={list._id}
                             className="text-2xl p-2 cursor-pointer hover:text-yellow-red-900 transition duration-200 ease-in-out"
                         >
@@ -41,7 +44,7 @@ const AllLists = () => {
                             >
                                 {list.title}
                             </Link>
-                        </li>
+                        </motion.li>
                     );
                 })}
             </ul>
