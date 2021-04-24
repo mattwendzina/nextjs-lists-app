@@ -58,29 +58,40 @@ const Navbar = ({ children, click }) => {
 
     return (
         <nav className="relative ">
-            <div className="inset-center text-white text-base sm:text-3xl ">
-                {!edit ? (
-                    <p onClick={() => toggleEdit(true)}>{title}</p>
-                ) : (
-                    <form onSubmit={(e) => updateTitle(e)}>
-                        <input
-                            className="text-center border-none git  focus:ring-teal-600"
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            onBlur={(e) => {
-                                updateTitle(e);
-                                toggleEdit(false);
-                            }}
-                            autoFocus={true}
-                        />
-                    </form>
-                )}
-            </div>
-            <div className="flex p-3 gap-x-2 bg-teal-600 justify-between items-center ">
-                <NavItem link={'/'} title="Home" classes={navItemClasses} />
-
-                <div className="sm:flex-row hidden xs:flex">
+            <div className="flex p-5 gap-x-2 bg-teal-600 justify-between items-center ">
+                <div className="hidden sm:flex w-1/6 pl-2">
+                    <Home />
+                </div>
+                <div className={titleClasses}>
+                    {edit && title.editable ? (
+                        <form onSubmit={(e) => updateTitle(e)}>
+                            <input
+                                className="text-center border-none text-2xl bg-teal-600 focus:ring-teal-600"
+                                type="text"
+                                value={title.name}
+                                onChange={(e) =>
+                                    setTitle({ ...title, name: e.target.value })
+                                }
+                                onBlur={(e) => {
+                                    updateTitle(e);
+                                    toggleEdit(false);
+                                }}
+                                autoFocus={true}
+                            />
+                        </form>
+                    ) : (
+                        <p
+                            onClick={() => title.editable && toggleEdit(true)}
+                            className={
+                                title.editable &&
+                                'cursor-pointer hover:text-yellow-red-900 transition duration-300'
+                            }
+                        >
+                            {title.name}
+                        </p>
+                    )}
+                </div>
+                <div className="hidden sm:flex md:w-1/5 lg:w-1/6 justify-center">
                     <NavItem
                         link={'/lists'}
                         title="All Lists"
