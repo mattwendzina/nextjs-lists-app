@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import Navbar from './Navbar/Navbar';
 import SideDrawer from './SideDrawer/SideDrawer';
 
