@@ -57,7 +57,7 @@ const ListItem = ({
                         }}
                     />
                     <p
-                        className={localChecked ? 'line-through' : null}
+                        className={localChecked ? 'line-through  w-64' : 'w-64'}
                         onClick={() => toggleEdit(true)}
                     >
                         {title}
