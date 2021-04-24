@@ -12,10 +12,13 @@ const Navbar = ({ children, click }) => {
     const [title, setTitle] = useState('');
     const [edit, toggleEdit] = useState(false);
     const router = useRouter();
-    const navItemClasses =
-        'hover:text-yellow-red-900 duration-300 text-white p-1 transition text-base sm:text-lg';
 
-    const menuClasses = `${classes.menu} xs:hidden`;
+    const navItemClasses =
+        'hover:text-yellow-red-900 duration-300 text-white px-2 transition text-base sm:text-lg';
+
+    const menuClasses = `${classes.menu} sm:hidden text-xl`;
+
+    const titleClasses = `${classes.title} order-1 text-white text-lg xs:text-2xl text-center px-2 flex-grow`;
 
     useEffect(() => {
         switch (router.pathname) {
