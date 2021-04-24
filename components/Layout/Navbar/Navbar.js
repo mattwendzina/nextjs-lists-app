@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { HiOutlineMenu } from 'react-icons/hi';
+import { BiHome } from 'react-icons/bi';
 import { motion } from 'framer-motion';
 import classes from './navbar.module.css';
 
@@ -9,7 +11,7 @@ import NavItem from '../NavItem/NavItem';
 
 const Navbar = ({ children, click }) => {
     const listsCtx = useContext(ListsContext);
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState({ name: null, editable: false });
     const [edit, toggleEdit] = useState(false);
     const router = useRouter();
 
@@ -23,11 +25,17 @@ const Navbar = ({ children, click }) => {
     useEffect(() => {
         switch (router.pathname) {
             case '/createList':
-                return setTitle('Create List');
+                return setTitle(() => {
+                    return { name: 'Create List', editable: false };
+                });
             case '/lists':
-                return setTitle('All Lists');
+                return setTitle(() => {
+                    return { name: 'All Lists', editable: false };
+                });
             case '/lists/[title]/[listId]':
-                return setTitle(`${router.query.title}`);
+                return setTitle(() => {
+                    return { name: `${router.query.title}`, editable: true };
+                });
             default:
                 return setTitle('');
         }
