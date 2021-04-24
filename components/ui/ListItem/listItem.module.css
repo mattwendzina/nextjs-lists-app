@@ -2,7 +2,6 @@
 .icon1__unChecked,
 .icon1__checked {
     color: #0d9488;
-    opacity: 0;
     transition: 300ms ease-in-out;
     position: absolute;
     top: 50%;
@@ -42,4 +41,12 @@
 .input:hover {
     box-shadow: none;
     border-bottom: solid 1px #0d9488;
+}
+
+@media screen and (min-width: 640px) {
+    .icon,
+    .icon1__unChecked,
+    .icon1__checked {
+        opacity: 0;
+    }
 }
