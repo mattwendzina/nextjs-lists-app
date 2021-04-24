@@ -98,7 +98,7 @@ const Navbar = ({ children, click }) => {
                     onClick={click}
                     className={menuClasses}
                 >
-                    <HiOutlineMenu className="text-white text-lg" />
+                    <HiOutlineMenu className="text-white xs:text-2xl" />
                 </motion.div>
             </div>
             <div>{children}</div>
