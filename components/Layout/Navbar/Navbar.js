@@ -1,6 +1,8 @@
 import { useEffect, useState, useContext } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { HiOutlineMenu } from 'react-icons/hi';
+import { BiHome } from 'react-icons/bi';
 import { motion } from 'framer-motion';
 import classes from './navbar.module.css';
 
@@ -9,26 +11,44 @@ import NavItem from '../NavItem/NavItem';
 
 const Navbar = ({ children, click }) => {
     const listsCtx = useContext(ListsContext);
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState({ name: null, editable: false });
     const [edit, toggleEdit] = useState(false);
     const router = useRouter();
-    const navItemClasses =
-        'hover:text-yellow-red-900 duration-300 text-white p-1 transition text-base sm:text-lg';
 
-    const menuClasses = `${classes.menu} xs:hidden`;
+    const navItemClasses =
+        'hover:text-yellow-red-900 duration-300 text-white px-2 transition text-base sm:text-lg';
+
+    const menuClasses = `${classes.menu} sm:hidden text-xl`;
+
+    const titleClasses =
+        'order-1 sm:order-none text-white text-lg xs:text-2xl text-center px-2 flex-grow';
 
     useEffect(() => {
         switch (router.pathname) {
             case '/createList':
-                return setTitle('Create List');
+                return setTitle(() => {
+                    return { name: 'Create List', editable: false };
+                });
             case '/lists':
-                return setTitle('All Lists');
+                return setTitle(() => {
+                    return { name: 'All Lists', editable: false };
+                });
             case '/lists/[title]/[listId]':
-                return setTitle(`${router.query.title}`);
+                return setTitle(() => {
+                    return { name: `${router.query.title}`, editable: true };
+                });
             default:
                 return setTitle('');
         }
     }, [router.pathname, router.query.title]);
+
+    const Home = () => (
+        <Link href="/">
+            <a>
+                <BiHome className="text-white text-2xl cursor-pointer hover:text-yellow-red-900 transition duration-300" />
+            </a>
+        </Link>
+    );
 
     const updateTitle = async (e) => {
         e.preventDefault();
@@ -50,29 +70,40 @@ const Navbar = ({ children, click }) => {
 
     return (
         <nav className="relative ">
-            <div className="inset-center text-white text-base sm:text-3xl ">
-                {!edit ? (
-                    <p onClick={() => toggleEdit(true)}>{title}</p>
-                ) : (
-                    <form onSubmit={(e) => updateTitle(e)}>
-                        <input
-                            className="text-center border-none git  focus:ring-teal-600"
-                            type="text"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            onBlur={(e) => {
-                                updateTitle(e);
-                                toggleEdit(false);
-                            }}
-                            autoFocus={true}
-                        />
-                    </form>
-                )}
-            </div>
-            <div className="flex p-3 gap-x-2 bg-teal-600 justify-between items-center ">
-                <NavItem link={'/'} title="Home" classes={navItemClasses} />
-
-                <div className="sm:flex-row hidden xs:flex">
+            <div className="flex p-5 gap-x-2 bg-teal-600 justify-between items-center ">
+                <div className="hidden sm:flex w-1/6 pl-2">
+                    <Home />
+                </div>
+                <div className={titleClasses}>
+                    {edit && title.editable ? (
+                        <form onSubmit={(e) => updateTitle(e)}>
+                            <input
+                                className="text-center border-none text-2xl bg-teal-600 focus:ring-teal-600"
+                                type="text"
+                                value={title.name}
+                                onChange={(e) =>
+                                    setTitle({ ...title, name: e.target.value })
+                                }
+                                onBlur={(e) => {
+                                    updateTitle(e);
+                                    toggleEdit(false);
+                                }}
+                                autoFocus={true}
+                            />
+                        </form>
+                    ) : (
+                        <p
+                            onClick={() => title.editable && toggleEdit(true)}
+                            className={
+                                title.editable &&
+                                'cursor-pointer hover:text-yellow-red-900 transition duration-300'
+                            }
+                        >
+                            {title.name}
+                        </p>
+                    )}
+                </div>
+                <div className="hidden sm:flex md:w-1/5 lg:w-1/6 justify-center">
                     <NavItem
                         link={'/lists'}
                         title="All Lists"
@@ -90,7 +121,7 @@ const Navbar = ({ children, click }) => {
                     onClick={click}
                     className={menuClasses}
                 >
-                    <HiOutlineMenu className="text-white text-lg" />
+                    <HiOutlineMenu className="text-white xs:text-2xl" />
                 </motion.div>
             </div>
             <div>{children}</div>

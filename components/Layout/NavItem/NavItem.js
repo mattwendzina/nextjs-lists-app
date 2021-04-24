@@ -19,5 +19,5 @@ NavItem.propTypes = {
     classes: PropTypes.string,
     link: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    click: PropTypes.function,
+    click: PropTypes.func,
 };

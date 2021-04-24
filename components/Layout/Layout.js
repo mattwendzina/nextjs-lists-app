@@ -19,7 +19,7 @@ const Layout = (props) => {
                 )}
             </div>
             <main className="bg-gainsboro-50 flex-1 h-full">
-                <div className="bg-white mx-auto md:max-w-5xl h-full">
+                <div className="bg-white mx-auto md:max-w-5xl h-full overflow-scroll">
                     {props.children}
                 </div>
             </main>
