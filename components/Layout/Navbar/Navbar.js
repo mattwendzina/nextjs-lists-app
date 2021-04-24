@@ -30,6 +30,14 @@ const Navbar = ({ children, click }) => {
         }
     }, [router.pathname, router.query.title]);
 
+    const Home = () => (
+        <Link href="/">
+            <a>
+                <BiHome className="text-white text-2xl cursor-pointer hover:text-yellow-red-900 transition duration-300" />
+            </a>
+        </Link>
+    );
+
     const updateTitle = async (e) => {
         e.preventDefault();
         const updatedTitle =
