@@ -20,7 +20,8 @@ const Navbar = ({ children, click }) => {
 
     const menuClasses = `${classes.menu} sm:hidden text-xl`;
 
-    const titleClasses = `${classes.title} order-1 text-white text-lg xs:text-2xl text-center px-2 flex-grow`;
+    const titleClasses =
+        'order-1 sm:order-none text-white text-lg xs:text-2xl text-center px-2 flex-grow';
 
     useEffect(() => {
         switch (router.pathname) {
