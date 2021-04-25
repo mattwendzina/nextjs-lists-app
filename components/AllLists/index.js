@@ -1,31 +1,43 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
+import Error from 'next/error';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import ListsContext from '../../store/lists-context';
 
 const AllLists = () => {
-    const [listNames, setListNames] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState();
     const listsCtx = useContext(ListsContext);
 
     useEffect(async () => {
-        const response = await fetch('/api/allLists', {
-            method: 'GET',
-        });
-        const { allLists } = await response.json();
-        setIsLoading(false);
-        setListNames(allLists.map((list) => list));
-        listsCtx.setLists(allLists);
+        if (listsCtx.allLists.length === 0) {
+            const response = await fetch('/api/allLists', {
+                method: 'GET',
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                setError({
+                    message: 'Failed to get lists!',
+                    data: data.message,
+                });
+                return;
+            }
+            const { allLists } = await response.json();
+            listsCtx.setLists(allLists);
+        }
     }, []);
 
-    if (isLoading) {
+    if (error) {
+        return <Error statusCode={error.message} />;
+    }
+
+    if (listsCtx.allLists.length === 0) {
         return <p className="text-center text-xl"> Loading...</p>;
     }
 
     return (
         <div className="text-center w-max mx-auto ">
             <ul>
-                {listNames.map((list) => {
+                {listsCtx.allLists.map((list) => {
                     return (
                         <motion.li
                             initial={{ opacity: 0 }}
