@@ -95,8 +95,9 @@ const Navbar = ({ children, click }) => {
                         <p
                             onClick={() => title.editable && toggleEdit(true)}
                             className={
-                                title.editable &&
-                                'cursor-pointer hover:text-yellow-red-900 transition duration-300'
+                                title.editable
+                                    ? 'cursor-pointer hover:text-yellow-red-900 transition duration-300'
+                                    : null
                             }
                         >
                             {title.name}
