@@ -25,15 +25,7 @@ export const ListsContextProvider = (props) => {
         }
     };
 
-    const updateListHandler = async (list) => {
-        const response = await fetch('/api/updateList', {
-            method: 'POST',
-            body: JSON.stringify(list),
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await response.json();
-
-        console.log('RESULT: ', data);
+    const updateListHandler = async () => {
         // Make sure you pull latest version of lists with update
         const lists = await fetch('/api/allLists');
         const { allLists } = await lists.json();
