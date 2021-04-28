@@ -1,31 +1,30 @@
-import { MongoClient } from 'mongodb';
+import { connectToDatabase, updateList } from '../../helpers/db-utils';
 
 export default async (req, res) => {
     if (req.method === 'POST') {
-        const connectionString =
-            'mongodb+srv://mattwendzina:bXKcltQ6Ovq1jl8g@cluster0.a1qam.mongodb.net/listsDatabase?retryWrites=true&w=majority';
+        let client;
 
-        const client = await MongoClient.connect(connectionString);
+        try {
+            client = await connectToDatabase();
+        } catch (e) {
+            res.status(500).json({
+                message: `Failed to connect to server! - ${e.message}`,
+            });
+            return;
+        }
 
-        const db = client.db();
-
-        const ObjectID = require('mongodb').ObjectID;
-
-        const id = req.body._id;
+        const { _id: id, title, items } = req.body;
 
         let result;
         try {
-            result = await db.collection('lists').findOneAndUpdate(
-                { _id: new ObjectID(id) },
-                {
-                    $set: { items: req.body.items, title: req.body.title },
-                },
-                { upsert: true }
-            );
-            res.status(201).json({ message: result });
+            result = await updateList(client, id, items, title);
         } catch (e) {
-            res.status(404).json({ message: e });
-            console.log('ERROR', e);
+            client.close();
+            res.status(404).json({ message: 'Failed to update list! - ', e });
+            return;
         }
+
+        client.close();
+        res.status(201).json({ message: result });
     }
 };
