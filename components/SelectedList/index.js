@@ -105,18 +105,11 @@ const SelectedList = () => {
         itemsCtx.removeItem(id);
     };
 
-    const toggleChecked = (checked, id) => {
-        const updatedListItems = selectedList.items.map((item, i) => {
-            if (item.id === id) {
-                return {
-                    ...item,
-                    checked: !checked,
-                };
-            }
-            return item;
-        });
-
-        const updatedList = { ...selectedList, items: updatedListItems };
+    const toggleChecked = async (checked, id) => {
+        const updatedList = {
+            ...selectedList,
+            items: modifyList(selectedList, 'checked', !checked, id),
+        };
 
         const result = await updateList(updatedList);
         console.log('RESULT: ', result);
