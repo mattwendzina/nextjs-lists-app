@@ -138,8 +138,8 @@ const SelectedList = () => {
             <List
                 listItems={itemsCtx.items}
                 changed={itemsCtx.updateItem}
-                blur={updateList}
-                submit={updateList}
+                blur={updateItem}
+                submit={updateItem}
                 remove={removeItem}
                 toggleChecked={toggleChecked}
             />
