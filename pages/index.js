@@ -22,18 +22,17 @@ export default function Home({ error, allLists }) {
 }
 
 export async function getServerSideProps() {
-    let lists = null;
+    let result = null;
     let errorCode = false;
     try {
-        lists = await getAllLists();
+        result = await getAllLists();
     } catch (e) {
         errorCode = e.props;
     }
-
     return {
         props: {
             error: errorCode,
-            allLists: lists,
+            allLists: result && result.allLists,
         },
     };
 }
