@@ -2,15 +2,18 @@ import { createContext, useState } from 'react';
 
 const ItemsContext = createContext({
     items: [],
+    error: '',
     addItem: (item) => {},
     addItems: (items) => {},
     removeItem: (itemId) => {},
     updateItem: (itemId) => {},
     clearItems: () => {},
+    setError: () => {},
 });
 
 export const ItemsContextProvider = (props) => {
     const [items, setItems] = useState([]);
+    const [error, setError] = useState(null);
 
     const addItemHandler = (item) => {
         setItems((prevItems) => {
@@ -56,13 +59,22 @@ export const ItemsContextProvider = (props) => {
         });
     };
 
+    const setErrorHandler = (data) => {
+        setError(data.message);
+        setTimeout(() => {
+            setError(null);
+        }, 3000);
+    };
+
     const context = {
         items: items,
+        error: error,
         addItem: addItemHandler,
         addItems: addItemsHandler,
         removeItem: removeItemHandler,
         updateItem: updateItemHandler,
         clearItems: clearItemsHandler,
+        setError: setErrorHandler,
     };
 
     return (
