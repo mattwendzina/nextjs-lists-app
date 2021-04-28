@@ -118,8 +118,8 @@ const SelectedList = () => {
 
         const updatedList = { ...selectedList, items: updatedListItems };
 
-        // Update checked status
-        listsCtx.updateList(updatedList);
+        const result = await updateList(updatedList);
+        console.log('RESULT: ', result);
     };
 
     return (
