@@ -11,13 +11,6 @@ import Input from '../ui/Input/Input';
 import Button from '../ui/Button/Button';
 import List from '../ui/List/List';
 
-const hasItemChanged = (list, value, id) => {
-    const item = list.items
-        .filter((item) => item.id === id)
-        .map((item) => item.name);
-    return item[0] === value ? true : false;
-};
-
 const SelectedList = () => {
     const router = useRouter();
     const listsCtx = useContext(ListsContext);
