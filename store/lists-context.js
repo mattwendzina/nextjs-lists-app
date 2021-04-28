@@ -21,6 +21,7 @@ export const ListsContextProvider = (props) => {
         const list = lists.find((list) => list._id === id);
         if (list) {
             setSelectedList(list);
+            // Add items into context in the itemsContext store
             itemsCtx.addItems(list.items);
         }
     };
