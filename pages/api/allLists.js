@@ -11,7 +11,6 @@ export default async (req, res) => {
     try {
         client = await connectToDatabase();
     } catch (e) {
-        client.close();
         res.status(500).json({
             message: `Failed to connect to server! - ${e.message}`,
         });
