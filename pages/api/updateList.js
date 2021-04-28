@@ -13,7 +13,7 @@ export default async (req, res) => {
             return;
         }
 
-        const { _id: id, title, items } = req.body;
+        const { _id: id, title, itemss } = req.body;
 
         let result;
         try {
