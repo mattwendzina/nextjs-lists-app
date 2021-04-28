@@ -30,8 +30,8 @@ const SelectedList = () => {
         // If a user navigates directly to this page, the lists won't have been loaded
         if (listsCtx.allLists.length === 0) {
             try {
-                const allLists = await getAllLists();
-                listsCtx.setLists(allLists);
+                const result = await getAllLists();
+                listsCtx.setLists(result.allLists);
             } catch (e) {
                 console.error('ERROR: ', e);
                 setErrorCode(e.props);
