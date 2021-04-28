@@ -1,28 +1,25 @@
-import { MongoClient } from 'mongodb';
+import { connectToDatabase, getAllLists } from '../../helpers/db-utils';
 
 export default async (req, res) => {
     if (req.method !== 'GET') {
         return;
     }
 
-    const connectionString =
-        'mongodb+srv://mattwendzina:bXKcltQ6Ovq1jl8g@cluster0.a1qam.mongodb.net/listsDatabase?retryWrites=true&w=majority';
-
     let client;
+    let result;
+
     try {
-        client = await MongoClient.connect(connectionString);
+        client = await connectToDatabase();
     } catch (e) {
+        client.close();
         res.status(500).json({
             message: `Failed to connect to server! - ${e.message}`,
         });
         return;
     }
 
-    const db = client.db();
-
-    let result;
     try {
-        result = await db.collection('lists').find().toArray();
+        result = await getAllLists(client);
     } catch (e) {
         client.close();
         res.status(500).json({ message: 'Failed to retrieve lists!' });
