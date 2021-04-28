@@ -15,7 +15,7 @@ export const ListsContextProvider = (props) => {
     const [lists, setLists] = useState([]);
     const [selectedList, setSelectedList] = useState([]);
 
-    const setListsHandler = (lists) => setLists(lists);
+    const setListsHandler = (lists) => setLists(lists.allLists);
 
     const selectListHandler = (id) => {
         const list = lists.find((list) => list._id === id);
