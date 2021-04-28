@@ -21,6 +21,7 @@ const SelectedList = () => {
 
     const { listId } = router.query;
     const selectedList = listsCtx.selectedList;
+    const error = itemsCtx.error;
 
     useEffect(async () => {
         // Router.query always returns empty on first render, so return out of function
@@ -59,11 +60,15 @@ const SelectedList = () => {
             ...listsCtx.selectedList,
             items: modifyList(selectedList, 'name', value, id),
         };
-
+        let result;
         try {
-        } catch (e) {}
+            result = await updateList(updatedList);
+        } catch (e) {
+            itemsCtx.setError(e.props);
+            // Reset list
+            listsCtx.selectList(listsCtx.selectedList._id);
+        }
 
-        const result = await updateList(updatedList);
         console.log('RESULT: ', result);
     };
 
@@ -143,6 +148,11 @@ const SelectedList = () => {
                 remove={removeItem}
                 toggleChecked={toggleChecked}
             />
+            {error && (
+                <p className="absolute top-2/4 left-2/4 -translate-x-2/4 transform bg-black p-2 text-yellow-red-900 text-2xl">
+                    {error}
+                </p>
+            )}
         </div>
     );
 };
