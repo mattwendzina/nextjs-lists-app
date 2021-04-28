@@ -83,8 +83,8 @@ const SelectedList = () => {
         updatedListItems.unshift(newItemToAdd);
         const updatedList = { ...selectedList, items: updatedListItems };
 
-        // Add to databse
-        listsCtx.updateList(updatedList);
+        const result = await updateList(updatedList);
+        console.log('RESULT: ', result);
 
         // Update UI
         itemsCtx.addItem(newItemToAdd);
@@ -98,8 +98,8 @@ const SelectedList = () => {
 
         const updatedList = { ...selectedList, items: updatedListItems };
 
-        // Remove item from databse
-        listsCtx.updateList(updatedList);
+        const result = await updateList(updatedList);
+        console.log('RESULT: ', result);
 
         // Update UI
         itemsCtx.removeItem(id);
