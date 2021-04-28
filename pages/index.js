@@ -4,7 +4,7 @@ import Head from 'next/head';
 import Homepage from '../components/Homepage/Homepage';
 import { getAllLists } from '../helpers/api-utils';
 
-export default function Home({ error, results }) {
+export default function Home({ error, allLists }) {
     if (error) {
         console.error('ERROR: ', error);
         return <Error statusCode={error.message} />;
@@ -16,16 +16,16 @@ export default function Home({ error, results }) {
                 <title>Matt Wendzina</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Homepage allLists={results.allLists} />
+            <Homepage allLists={allLists} />
         </Fragment>
     );
 }
 
 export async function getServerSideProps() {
-    let res = null;
+    let lists = null;
     let errorCode = false;
     try {
-        res = await getAllLists();
+        lists = await getAllLists();
     } catch (e) {
         errorCode = e.props;
     }
@@ -33,7 +33,7 @@ export async function getServerSideProps() {
     return {
         props: {
             error: errorCode,
-            results: res,
+            allLists: lists,
         },
     };
 }
