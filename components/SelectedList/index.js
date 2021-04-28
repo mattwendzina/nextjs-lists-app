@@ -50,27 +50,21 @@ const SelectedList = () => {
         return <p className="p-2 text-xl text-center">Loading...</p>;
     }
 
-    const updateList = (value, id) => {
-        if (hasItemChanged(selectedList, value, id)) {
+    const updateItem = async (value, id) => {
+        if (!hasItemChanged(selectedList, value, id)) {
             return;
         }
-        // Filter for the itme to selected, then update
-        const updatedListItems = selectedList.items.map((item) => {
-            if (item.id === id) {
-                return {
-                    ...item,
-                    name: value,
-                };
-            }
-            return item;
-        });
 
         const updatedList = {
             ...listsCtx.selectedList,
-            items: updatedListItems,
+            items: modifyList(selectedList, 'name', value, id),
         };
 
-        listsCtx.updateList(updatedList);
+        try {
+        } catch (e) {}
+
+        const result = await updateList(updatedList);
+        console.log('RESULT: ', result);
     };
 
     const addNewItem = async (e) => {
