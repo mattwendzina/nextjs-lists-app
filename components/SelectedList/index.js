@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import moment from 'moment';
 import { getAllLists, updateList } from '../../helpers/api-utils';
 import { hasItemChanged, modifyList } from '../../helpers/utils';
+import Error from 'next/error';
 import ListsContext from '../../store/lists-context';
 import ItemsContext from '../../store/items-context';
 import Input from '../ui/Input/Input';
@@ -23,6 +24,7 @@ const SelectedList = () => {
     const itemsCtx = useContext(ItemsContext);
 
     const [newItem, setNewItem] = useState('');
+    const [errorCode, setErrorCode] = useState();
 
     const { listId } = router.query;
     const selectedList = listsCtx.selectedList;
@@ -33,17 +35,23 @@ const SelectedList = () => {
             return;
         }
         // If a user navigates directly to this page, the lists won't have been loaded
-        // because as standard they get only get fetched on the allLists page.
         if (listsCtx.allLists.length === 0) {
-            const response = await fetch('/api/allLists');
-            const { allLists } = await response.json();
-            // Set all lists in context
-            listsCtx.setLists(allLists);
+            try {
+                const allLists = await getAllLists();
+                listsCtx.setLists(allLists);
+            } catch (e) {
+                console.error('ERROR: ', e);
+                setErrorCode(e.props);
+            }
         }
 
         // NOTE - selectList will in turn call addItems in the itemsCtx so that items can be edited through items store
         listsCtx.selectList(listId);
     }, [listId, listsCtx.allLists]);
+
+    if (errorCode) {
+        return <Error statusCode={errorCode.message} />;
+    }
 
     if (selectedList.length === 0) {
         return <p className="p-2 text-xl text-center">Loading...</p>;
