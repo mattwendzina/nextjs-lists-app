@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const hasItemChanged = (list, value, id) => {
     const item = list.items
         .filter((item) => item.id === id)
@@ -6,7 +8,7 @@ export const hasItemChanged = (list, value, id) => {
     return item[0] === value ? false : true;
 };
 
-export const modifyList = (selectedList, property, value, id) =>
+export const modifyItems = (selectedList, property, value, id) =>
     selectedList.items.map((item) => {
         if (item.id === id) {
             return {
@@ -16,3 +18,7 @@ export const modifyList = (selectedList, property, value, id) =>
         }
         return item;
     });
+
+export const getDate = () => {
+    return moment().format('MMMM Do YYYY, h:mm:ss a');
+};
