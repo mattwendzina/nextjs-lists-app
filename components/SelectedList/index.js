@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { getAllLists, updateList } from '../../helpers/api-utils';
-import { hasItemChanged, modifyList } from '../../helpers/utils';
+import { getDate, hasItemChanged, modifyItems } from '../../helpers/utils';
 import Error from 'next/error';
 import ListsContext from '../../store/lists-context';
 import ItemsContext from '../../store/items-context';
