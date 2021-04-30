@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import moment from 'moment';
 import { getAllLists, updateList } from '../../helpers/api-utils';
 import { hasItemChanged, modifyList } from '../../helpers/utils';
 import Error from 'next/error';
@@ -81,7 +80,7 @@ const SelectedList = () => {
             name: newItem,
             id: uuidv4(),
             checked: false,
-            date: date,
+            date: getDate(),
         };
 
         const updatedListItems = [...selectedList.items];
