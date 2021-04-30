@@ -51,6 +51,7 @@ const SelectedList = () => {
     }
 
     const updateItem = async (value, id) => {
+        // If item hasn't been changed, return
         if (!hasItemChanged(selectedList, value, id)) {
             return;
         }
