@@ -64,13 +64,13 @@ const SelectedList = () => {
         let result;
         try {
             result = await updateList(updatedList);
+            console.log('RESULT: ', result);
         } catch (e) {
+            console.error('Error - ', e);
             itemsCtx.setError(e.props);
             // Reset list
             listsCtx.selectList(listsCtx.selectedList._id);
         }
-
-        console.log('RESULT: ', result);
     };
 
     const addNewItem = async (e) => {
