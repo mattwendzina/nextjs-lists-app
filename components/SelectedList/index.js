@@ -148,7 +148,7 @@ const SelectedList = () => {
                 toggleChecked={toggleChecked}
             />
             {error && (
-                <p className="absolute top-2/4 left-2/4 -translate-x-2/4 transform bg-black p-2 text-yellow-red-900 text-2xl">
+                <p className="absolute top-3/4 left-2/4 -translate-x-2/4 transform bg-black p-4 bg-opacity-90 text-yellow-red-900 text-2xl">
                     {error}
                 </p>
             )}
