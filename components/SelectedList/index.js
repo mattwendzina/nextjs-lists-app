@@ -102,11 +102,16 @@ const SelectedList = () => {
 
         const updatedList = { ...selectedList, items: updatedListItems };
 
-        const result = await updateList(updatedList);
-        console.log('RESULT: ', result);
-
-        // Update UI
-        itemsCtx.removeItem(id);
+        let result;
+        try {
+            result = await updateList(updatedList);
+            console.log('RESULT');
+            // Update UI
+            itemsCtx.removeItem(id);
+        } catch (e) {
+            console.error('Error - ', e);
+            itemsCtx.setError(e.props);
+        }
     };
 
     const toggleChecked = async (checked, id) => {
@@ -115,8 +120,16 @@ const SelectedList = () => {
             items: modifyItems(selectedList, 'checked', !checked, id),
         };
 
-        const result = await updateList(updatedList);
-        console.log('RESULT: ', result);
+        let result;
+        try {
+            result = await updateList(updatedList);
+            console.log('RESULT: ', result);
+        } catch (e) {
+            console.error('Error - ', e);
+            itemsCtx.setError(e.props);
+            // Reset list
+            listsCtx.selectList(listsCtx.selectedList._id);
+        }
     };
 
     return (
