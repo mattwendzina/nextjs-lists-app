@@ -22,7 +22,10 @@ const CreateList = () => {
 
     const onSubmitItem = (e) => {
         e.preventDefault();
-        const newItem = { name: item, id: uuidv4() };
+        if (item === '') {
+            console.log('return');
+            return;
+        }
         itemsCtx.addItem(newItem);
         setItem('');
     };
@@ -69,7 +72,7 @@ const CreateList = () => {
                         changed={(e) => setItem(e.target.value)}
                         value={item}
                     />
-                    <Button title="Submit" />
+                    <Button title="Submit" disabled={!item ? true : false} />
                 </form>
             </div>
             <div className="px-10 m-10 border-2 flex-grow rounded-md">
