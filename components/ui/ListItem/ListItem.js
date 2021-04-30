@@ -17,9 +17,14 @@ const ListItem = ({
     const [localChecked, updateLocalChecked] = useState();
 
     useEffect(() => {
-        // Make sure that local toggle status gets synced with changes from DB
+        // Make sure that local toggle status gets synced with changes from DB. Doing this for UX purposes - it means they
+        // see it change instantly, otherwise, you get a slight lag as you wait for the response from the server.
         updateLocalChecked(checked);
-    }, [checked]);
+        // I had 'checked' in the dependency list, but removed it because it there is a DB connection failure or other
+        // error that causes the checked status not to update correctly, then it should be rolled back. When handling
+        // this error the selectedList gets reloaded but the checked status won't have changed meaning that if it's a
+        // dependency then it won't update because nothing will have changed.
+    });
 
     const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center text-lg`;
 
