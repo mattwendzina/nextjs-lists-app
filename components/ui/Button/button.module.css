@@ -1,0 +1,7 @@
+.disabled {
+    background-color: #d8dbe2;
+}
+.disabled:hover {
+    color: white;
+    cursor: default;
+}
