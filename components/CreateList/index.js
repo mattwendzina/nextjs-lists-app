@@ -26,6 +26,13 @@ const CreateList = () => {
             console.log('return');
             return;
         }
+
+        const newItem = {
+            name: item,
+            id: uuidv4(),
+            checked: false,
+            date: getDate(),
+        };
         itemsCtx.addItem(newItem);
         setItem('');
     };
