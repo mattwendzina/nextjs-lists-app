@@ -1,10 +1,13 @@
 import PropTypes from 'prop-types';
+import styles from './button.module.css';
 
 const Button = (props) => {
-    const { title, click, classes, type } = props;
+    const { title, click, classes, type, disabled } = props;
+
+    const disabledClasses = disabled ? styles.disabled : styles.enabled;
 
     const initialClasses = [
-        'bg-teal-500 rounded-md p-2 m-2 text-white hover:text-yellow-red-900 transition duration-300 ease-in-out focus:outline-none focus:ring focus:ring-yellow-red-900 focus:ring-opacity-50 shadow-lg',
+        `${disabledClasses} bg-teal-500 rounded-md p-2 m-2 text-white hover:text-yellow-red-900 transition duration-300 ease-in-out focus:outline-none focus:ring focus:ring-yellow-red-900 focus:ring-opacity-50 shadow-lg`,
     ];
 
     if (classes) {
@@ -14,7 +17,12 @@ const Button = (props) => {
     const combinedClasses = initialClasses.join(' ');
 
     return (
-        <button type={type} onClick={click} className={combinedClasses}>
+        <button
+            type={type}
+            onClick={click}
+            className={combinedClasses}
+            disabled={disabled}
+        >
             {title}
         </button>
     );
@@ -27,4 +35,5 @@ Button.propTypes = {
     click: PropTypes.func,
     classes: PropTypes.array,
     type: PropTypes.string,
+    disabled: PropTypes.bool,
 };
