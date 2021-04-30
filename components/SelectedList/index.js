@@ -75,8 +75,6 @@ const SelectedList = () => {
     const addNewItem = async (e) => {
         e.preventDefault();
 
-        const date = moment().format('MMMM Do YYYY, h:mm:ss a');
-
         const newItemToAdd = {
             name: newItem,
             id: uuidv4(),
