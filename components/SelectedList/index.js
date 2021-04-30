@@ -58,8 +58,9 @@ const SelectedList = () => {
 
         const updatedList = {
             ...listsCtx.selectedList,
-            items: modifyList(selectedList, 'name', value, id),
+            items: modifyItems(selectedList, 'name', value, id),
         };
+
         let result;
         try {
             result = await updateList(updatedList);
@@ -111,7 +112,7 @@ const SelectedList = () => {
     const toggleChecked = async (checked, id) => {
         const updatedList = {
             ...selectedList,
-            items: modifyList(selectedList, 'checked', !checked, id),
+            items: modifyItems(selectedList, 'checked', !checked, id),
         };
 
         const result = await updateList(updatedList);
