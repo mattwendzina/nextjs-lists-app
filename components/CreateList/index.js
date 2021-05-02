@@ -6,11 +6,12 @@ import Input from '../ui/Input/Input';
 import Button from '../ui/Button/Button';
 import List from '../ui/List/List';
 import ItemsContext from '../../store/items-context';
+import TitleItem from '../ui/TitleItem/TitleItem';
 
 const CreateList = () => {
     const itemsCtx = useContext(ItemsContext);
 
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState('List Name');
     const [item, setItem] = useState('');
     const [isLoading, setIsLoading] = useState(true);
 
@@ -54,7 +55,7 @@ const CreateList = () => {
         const data = await result.json();
         console.log('DATA:', data);
         itemsCtx.clearItems();
-        setTitle('');
+        setTitle('New List');
     };
 
     if (isLoading) {
@@ -64,18 +65,9 @@ const CreateList = () => {
     return (
         <div className="md:flex">
             <div className="p-3">
-                <div className="text-center">
-                    <Input
-                        title="List name"
-                        id="listName"
-                        value={title}
-                        changed={(e) => setTitle(e.target.value)}
-                    />
-                </div>
-
                 <form onSubmit={onSubmitItem} className="text-center">
                     <Input
-                        title="Item name"
+                        title="Add Item"
                         id="listItem"
                         changed={(e) => setItem(e.target.value)}
                         value={item}
@@ -84,11 +76,14 @@ const CreateList = () => {
                 </form>
             </div>
             <div className="px-10 m-10 border-2 flex-grow rounded-md">
-                {title && (
-                    <h1 className="text-center text-xl border-b p-2 w-3/6 mx-auto border-yellow-red-900">
-                        {title}
-                    </h1>
-                )}
+                <div className="text-center border-b pt-3 w-3/6 mx-auto border-yellow-red-900">
+                    <TitleItem
+                        value={title}
+                        remove={removeItemHandler}
+                        changed={setTitle}
+                        blur={itemsCtx.updateItem}
+                    />
+                </div>
 
                 <List
                     listItems={itemsCtx.items}
@@ -98,7 +93,7 @@ const CreateList = () => {
                 />
 
                 {itemsCtx.items.length > 0 && (
-                    <div className="mx-auto w-full text-center m-6">
+                    <div className="mx-auto w-full text-center m-4">
                         <Button title="Create List" click={submitFormHandler} />
                     </div>
                 )}
