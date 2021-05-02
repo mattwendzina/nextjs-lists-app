@@ -6,7 +6,7 @@ const ListsContext = createContext({
     selectedList: [],
     setLists: () => {},
     selectList: () => {},
-    updateList: () => {},
+    refreshList: () => {},
 });
 
 export const ListsContextProvider = (props) => {
@@ -26,8 +26,7 @@ export const ListsContextProvider = (props) => {
         }
     };
 
-    const updateListHandler = async () => {
-        // Make sure you pull latest version of lists with update
+    const refreshListHandler = async () => {
         const lists = await fetch('/api/allLists');
         const { allLists } = await lists.json();
         setLists(allLists);
@@ -38,7 +37,7 @@ export const ListsContextProvider = (props) => {
         selectedList: selectedList,
         setLists: setListsHandler,
         selectList: selectListHandler,
-        updateList: updateListHandler,
+        refreshList: refreshListHandler,
     };
 
     return (
