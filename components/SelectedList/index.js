@@ -148,7 +148,11 @@ const SelectedList = () => {
                 />
 
                 <div>
-                    <Button title="Submit" classes={['mb-0']} />
+                    <Button
+                        title="Submit"
+                        classes={['mb-0']}
+                        disabled={!newItem ? true : false}
+                    />
                 </div>
             </form>
 
