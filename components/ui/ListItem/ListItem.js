@@ -24,7 +24,8 @@ const ListItem = ({
         // error that causes the checked status not to update correctly, then it should be rolled back. When handling
         // this error the selectedList gets reloaded but the checked status won't have changed meaning that if it's a
         // dependency then it won't update because nothing will have changed.
-    });
+        // CHECKED ADDED BACK IN AS IT CAUSES BIGGER ISSUES WITHOUT IT!
+    }, [checked]);
 
     const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center text-lg`;
 
@@ -42,8 +43,9 @@ const ListItem = ({
     };
 
     // Bit of duplication, but is a way of ensuring that the UI is updated instantly, while DB gets updated
-    const toggleLocalChecked = (checked) => {
+    const toggleItemChecked = (checked) => {
         updateLocalChecked(!checked);
+        toggleChecked(checked, id);
     };
 
     return (
@@ -57,8 +59,7 @@ const ListItem = ({
                                 : classes.icon1__unChecked
                         }
                         onClick={() => {
-                            toggleChecked(checked, id);
-                            toggleLocalChecked(checked);
+                            toggleItemChecked(localChecked);
                         }}
                     />
                     <p
