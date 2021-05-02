@@ -5,12 +5,15 @@ import { HiOutlineMenu } from 'react-icons/hi';
 import { BiHome } from 'react-icons/bi';
 import { motion } from 'framer-motion';
 import classes from './navbar.module.css';
+import { updateList } from '../../../helpers/api-utils';
 
 import ListsContext from '../../../store/lists-context';
+import ItemsContext from '../../../store/items-context';
 import NavItem from '../NavItem/NavItem';
 
 const Navbar = ({ children, click }) => {
     const listsCtx = useContext(ListsContext);
+    const itemsCtx = useContext(ItemsContext);
     const [title, setTitle] = useState({ name: null, editable: false });
     const [edit, toggleEdit] = useState(false);
     const router = useRouter();
@@ -60,7 +63,17 @@ const Navbar = ({ children, click }) => {
             title: updatedTitle,
         };
 
-        listsCtx.updateList(updatedList);
+        let result;
+        try {
+            result = await updateList(updatedList);
+            listsCtx.refreshList();
+            console.log('RESULT: ', result);
+        } catch (e) {
+            console.error('Error - ', e);
+            itemsCtx.setError(e.props);
+            // Reset list
+            listsCtx.selectList(listsCtx.selectedList._id);
+        }
 
         const updatedUrl = `/lists/${updatedTitle}/${router.query.listId}/`;
         router.replace(updatedUrl);
@@ -78,7 +91,7 @@ const Navbar = ({ children, click }) => {
                     {edit && title.editable ? (
                         <form onSubmit={(e) => updateTitle(e)}>
                             <input
-                                className="text-center border-none text-2xl bg-teal-600 focus:ring-teal-600"
+                                className="text-center border-none text-2xl bg-teal-600 focus:ring-teal-600 p-0"
                                 type="text"
                                 value={title.name}
                                 onChange={(e) =>
