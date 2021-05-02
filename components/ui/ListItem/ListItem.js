@@ -28,7 +28,7 @@ const ListItem = ({
 
     const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center text-lg`;
 
-    const inputClassNames = `${classes.input} text-center focus:shadow-none border-none focus:outline-none b text-lg`;
+    const inputClassNames = `${classes.input} text-center border-none p-0 text-lg`;
 
     const updateItem = (e, id) => {
         e.preventDefault();
