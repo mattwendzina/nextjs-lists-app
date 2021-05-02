@@ -31,7 +31,7 @@ export const ItemsContextProvider = (props) => {
 
     const clearItemsHandler = () => setItems([]);
 
-    const updateItemHandler = (value, id, action) => {
+    const updateItemHandler = (value, id) => {
         setItems((prevState) => {
             const updatedItems = items
                 .map((item, idx) => {
