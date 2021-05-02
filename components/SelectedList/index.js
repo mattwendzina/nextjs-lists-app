@@ -85,14 +85,22 @@ const SelectedList = () => {
 
         const updatedListItems = [...selectedList.items];
         updatedListItems.unshift(newItemToAdd);
+
         const updatedList = { ...selectedList, items: updatedListItems };
 
-        const result = await updateList(updatedList);
-        console.log('RESULT: ', result);
-
-        // Update UI
-        itemsCtx.addItem(newItemToAdd);
-        setNewItem('');
+        let result;
+        try {
+            result = await updateList(updatedList);
+            console.log('RESULT: ', result);
+            // Update UI
+            itemsCtx.addItem(newItemToAdd);
+            setNewItem('');
+        } catch (e) {
+            console.error('Error - ', e);
+            itemsCtx.setError(e.props);
+            // Reset list
+            listsCtx.selectList(listsCtx.selectedList._id);
+        }
     };
 
     const removeItem = async (id) => {
