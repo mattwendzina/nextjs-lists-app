@@ -30,6 +30,15 @@
     opacity: 1;
 }
 
+.listItem:before {
+    content: '';
+    position: absolute;
+    border-bottom: solid 1px #ffd37b;
+    left: 49%;
+    right: 49%;
+    bottom: 0;
+}
+
 .input:focus {
     box-shadow: none;
     border-bottom: solid 1px #0d9488;
