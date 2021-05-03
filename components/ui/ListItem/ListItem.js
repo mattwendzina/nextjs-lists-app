@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import ItemsContext from '../../../store/items-context';
 import { FiDelete } from 'react-icons/fi';
 import { IoCheckbox } from 'react-icons/io5';
 import classes from './listItem.module.css';
@@ -13,6 +14,7 @@ const ListItem = ({
     checked,
     toggleChecked,
 }) => {
+    const itemsCtx = useContext(ItemsContext);
     const [edit, toggleEdit] = useState(false);
     const [localChecked, updateLocalChecked] = useState();
 
@@ -20,12 +22,8 @@ const ListItem = ({
         // Make sure that local toggle status gets synced with changes from DB. Doing this for UX purposes - it means they
         // see it change instantly, otherwise, you get a slight lag as you wait for the response from the server.
         updateLocalChecked(checked);
-        // I had 'checked' in the dependency list, but removed it because it there is a DB connection failure or other
-        // error that causes the checked status not to update correctly, then it should be rolled back. When handling
-        // this error the selectedList gets reloaded but the checked status won't have changed meaning that if it's a
-        // dependency then it won't update because nothing will have changed.
-        // CHECKED ADDED BACK IN AS IT CAUSES BIGGER ISSUES WITHOUT IT!
-    }, [checked]);
+        // Add ItemsCtx.error as a dependency so that checked status gets rolled back if it is toggled when there is an error
+    }, [checked, itemsCtx.error]);
 
     const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center text-lg`;
 
