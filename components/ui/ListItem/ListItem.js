@@ -25,7 +25,7 @@ const ListItem = ({
         // Add ItemsCtx.error as a dependency so that checked status gets rolled back if it is toggled when there is an error
     }, [checked, itemsCtx.error]);
 
-    const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center text-lg`;
+    const liClassNames = `${classes.listItem} relative group cursor-pointer mx-auto w-max flex justify-center items-center text-lg p-1`;
 
     const inputClassNames = `${classes.input} text-center border-none p-0 text-lg`;
 
@@ -61,7 +61,11 @@ const ListItem = ({
                         }}
                     />
                     <p
-                        className={localChecked ? 'line-through  w-64' : 'w-64'}
+                        className={
+                            localChecked
+                                ? 'line-through  w-64 lg:w-80'
+                                : 'w-64 lg:w-80'
+                        }
                         onClick={() => toggleEdit(true)}
                     >
                         {title}
