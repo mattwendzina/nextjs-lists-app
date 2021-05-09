@@ -22,6 +22,8 @@ const SelectedList = () => {
     const selectedList = listsCtx.selectedList;
     const error = itemsCtx.error;
 
+    let timeout;
+
     useEffect(async () => {
         // Router.query always returns empty on first render, so return out of function
         if (!listId) {
@@ -123,21 +125,46 @@ const SelectedList = () => {
     };
 
     const toggleChecked = async (checked, id) => {
-        const updatedList = {
+        let updatedList;
+        let result;
+        if (timeout) {
+            updatedList = {
+                ...selectedList,
+                items: modifyItems(selectedList, 'checked', !checked, id),
+            };
+            listsCtx.updateList(updatedList);
+            clearTimeout(timeout);
+            timeout = setTimeout(async () => {
+                try {
+                    result = await updateList(updatedList);
+                    console.log('RESULT: ', result);
+                } catch (e) {
+                    console.error('Error - ', e);
+                    itemsCtx.setError(e.props);
+                    // Reset list
+                    listsCtx.selectList(listsCtx.selectedList._id);
+                }
+            }, 1500);
+            return;
+        }
+
+        updatedList = {
             ...selectedList,
             items: modifyItems(selectedList, 'checked', !checked, id),
         };
+        listsCtx.updateList(updatedList);
 
-        let result;
-        try {
-            result = await updateList(updatedList);
-            console.log('RESULT: ', result);
-        } catch (e) {
-            console.error('Error - ', e);
-            itemsCtx.setError(e.props);
-            // Reset list
-            listsCtx.selectList(listsCtx.selectedList._id);
-        }
+        timeout = setTimeout(async () => {
+            try {
+                result = await updateList(updatedList);
+                console.log('RESULT: ', result);
+            } catch (e) {
+                console.error('Error - ', e);
+                itemsCtx.setError(e.props);
+                // Reset list
+                listsCtx.selectList(listsCtx.selectedList._id);
+            }
+        }, 1500);
     };
 
     return (
