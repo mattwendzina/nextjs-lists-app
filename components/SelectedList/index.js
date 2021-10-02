@@ -17,12 +17,11 @@ const SelectedList = () => {
 
     const [newItem, setNewItem] = useState('');
     const [errorCode, setErrorCode] = useState();
+    const [timeout, setTimeout] = useState();
 
     const { listId } = router.query;
     const selectedList = listsCtx.selectedList;
     const error = itemsCtx.error;
-
-    let timeout;
 
     useEffect(async () => {
         // Router.query always returns empty on first render, so return out of function
@@ -105,38 +104,14 @@ const SelectedList = () => {
         }
     };
 
-    const removeItem = async (id) => {
-        const updatedListItems = selectedList.items.filter(
-            (item) => item.id !== id
-        );
-
-        const updatedList = { ...selectedList, items: updatedListItems };
-
-        let result;
-        try {
-            result = await updateList(updatedList);
-            console.log('RESULT');
-            // Update UI
-            itemsCtx.removeItem(id);
-        } catch (e) {
-            console.error('Error - ', e);
-            itemsCtx.setError(e.props);
-        }
-    };
-
-    const toggleChecked = async (checked, id) => {
-        let updatedList;
-        let result;
+    const debounceFunction = (updatedList, time) => {
         if (timeout) {
-            updatedList = {
-                ...selectedList,
-                items: modifyItems(selectedList, 'checked', !checked, id),
-            };
-            listsCtx.updateList(updatedList);
-            clearTimeout(timeout);
-            timeout = setTimeout(async () => {
+            clearTimeout(deleteTimeout);
+        }
+        setTimeout(
+            setTimeout(async () => {
                 try {
-                    result = await updateList(updatedList);
+                    const result = await updateList(updatedList);
                     console.log('RESULT: ', result);
                 } catch (e) {
                     console.error('Error - ', e);
@@ -144,27 +119,27 @@ const SelectedList = () => {
                     // Reset list
                     listsCtx.selectList(listsCtx.selectedList._id);
                 }
-            }, 1500);
-            return;
-        }
+            }, time)
+        );
+    };
 
-        updatedList = {
+    const removeItem = async (id) => {
+        const updatedListItems = selectedList.items.filter(
+            (item) => item.id !== id
+        );
+        const updatedList = { ...selectedList, items: updatedListItems };
+        itemsCtx.removeItem(id);
+        listsCtx.updateList(updatedList);
+        debounceFunction(updatedList, 1500);
+    };
+
+    const toggleChecked = async (checked, id) => {
+        const updatedList = {
             ...selectedList,
             items: modifyItems(selectedList, 'checked', !checked, id),
         };
         listsCtx.updateList(updatedList);
-
-        timeout = setTimeout(async () => {
-            try {
-                result = await updateList(updatedList);
-                console.log('RESULT: ', result);
-            } catch (e) {
-                console.error('Error - ', e);
-                itemsCtx.setError(e.props);
-                // Reset list
-                listsCtx.selectList(listsCtx.selectedList._id);
-            }
-        }, 1500);
+        debounceFunction(updatedList, 1500);
     };
 
     return (
