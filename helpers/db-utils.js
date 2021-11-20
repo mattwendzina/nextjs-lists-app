@@ -1,7 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const connectionString =
-    'mongodb+srv://mattwendzina:bXKcltQ6Ovq1jl8g@cluster0.a1qam.mongodb.net/listsDatabase?retryWrites=true&w=majority';
+const connectionString = process.env.DEV_DB;
 
 export const connectToDatabase = async () =>
     await MongoClient.connect(connectionString);
