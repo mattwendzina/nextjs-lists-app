@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
-const connectionString = process.env.MONGO_CONNECTION;
-
+const connectionString = process.env.LIVE_DB;
+console.log('CONNECTION STRING', connectionString);
 export const connectToDatabase = async () => {
     return await MongoClient.connect(connectionString);
 };
