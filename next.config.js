@@ -1,18 +1,14 @@
 const {
     PHASE_DEVELOPMENT_SERVER,
     PHASE_PRODUCTION_SERVER,
+    PHASE_PRODUCTION_BUILD,
 } = require('next/constants');
 
 module.exports = (phase) => {
     // npm run dev or next dev
     const isDev = phase === PHASE_DEVELOPMENT_SERVER;
     //npm run build or next build
-    const isProd =
-        phase === PHASE_PRODUCTION_SERVER && process.env.STAGING !== '1';
-
-    //npm run build or next build
-    const isStaging =
-        phase === PHASE_PRODUCTION_SERVER && process.env.STAGING === '1';
+    const isProd = phase === PHASE_PRODUCTION_SERVER || PHASE_PRODUCTION_BUILD;
 
     const env = {
         MONGO_CONNECTION: (() => {
