@@ -1,10 +1,9 @@
 import { MongoClient } from 'mongodb';
 
-const connectionString = process.env.LIVE_DB;
-console.log('CONNECTION STRING', connectionString);
-export const connectToDatabase = async () => {
-    return await MongoClient.connect(connectionString);
-};
+const connectionString = process.env.MONGO_CONNECTION;
+
+export const connectToDatabase = async () =>
+    await MongoClient.connect(connectionString);
 
 export const getAllLists = async (client) => {
     const db = client.db();
