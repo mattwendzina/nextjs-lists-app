@@ -1,10 +1,10 @@
 import { MongoClient } from 'mongodb';
 
-const connectionString =
-    'mongodb+srv://mattwendzina:bXKcltQ6Ovq1jl8g@cluster0.a1qam.mongodb.net/listsDatabase?retryWrites=true&w=majority';
+const connectionString = process.env.MONGO_CONNECTION;
 
-export const connectToDatabase = async () =>
-    await MongoClient.connect(connectionString);
+export const connectToDatabase = async () => {
+    return await MongoClient.connect(connectionString);
+};
 
 export const getAllLists = async (client) => {
     const db = client.db();
