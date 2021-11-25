@@ -2,6 +2,7 @@ import Error from 'next/error';
 import { server } from '../config/index';
 
 export const getAllLists = async () => {
+    console.log('SERVER: ', server);
     const res = await fetch(`${server}/api/allLists`, {
         method: 'GET',
     });
