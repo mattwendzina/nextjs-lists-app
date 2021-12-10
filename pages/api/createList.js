@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb';
+const List = require('../../models/lists');
 
 const handler = async (req, res) => {
     if (req.method === 'POST') {
@@ -6,8 +7,7 @@ const handler = async (req, res) => {
 
         newList.items = JSON.parse(req.body.items);
 
-        const connectionString =
-            'mongodb+srv://mattwendzina:bXKcltQ6Ovq1jl8g@cluster0.a1qam.mongodb.net/listsDatabase?retryWrites=true&w=majority';
+        const connectionString = process.env.MONGO_CONNECTION;
 
         const client = await MongoClient.connect(connectionString);
 
@@ -27,7 +27,15 @@ const handler = async (req, res) => {
         }
 
         try {
-            const result = await db.collection('lists').insertOne(newList);
+            console.log('SAVE NEW LIST...');
+            const list = new List();
+            list.title = 'Another List';
+            list.items = [
+                { name: '1', id: 1234, checked: false },
+                { name: '2', id: 2234, checked: false },
+                { name: '3', id: 3234, checked: true },
+            ];
+            const result = await db.collection('lists').insertOne(list);
             res.status(201).json({ message: 'New list created!' });
             client.close();
             return;

@@ -12,7 +12,7 @@ export default async (req, res) => {
         client = await connectToDatabase();
     } catch (e) {
         res.status(500).json({
-            message: `Failed to connect to server! - ${e.message}`,
+            message: `ALL LISTS - Failed to connect to server! - ${e.message}`,
         });
         return;
     }
