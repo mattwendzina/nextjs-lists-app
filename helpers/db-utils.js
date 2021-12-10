@@ -10,6 +10,11 @@ export const getAllLists = async (client) => {
     return await db.collection('lists').find().toArray();
 };
 
+export const getList = async (client, { listTitle }) => {
+    const db = client.db();
+    return await db.collection('lists').findOne({ title: listTitle });
+};
+
 export const updateList = async (client, id, items, title) => {
     const db = client.db();
 
