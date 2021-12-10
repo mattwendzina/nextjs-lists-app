@@ -1,7 +1,6 @@
-import { useRouter } from 'next/router';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { getAllLists, updateList } from '../../helpers/api-utils';
+import { updateList } from '../../helpers/api-utils';
 import { getDate, hasItemChanged, modifyItems } from '../../helpers/utils';
 import Error from 'next/error';
 import ListsContext from '../../store/lists-context';
@@ -10,8 +9,7 @@ import Input from '../ui/Input/Input';
 import Button from '../ui/Button/Button';
 import List from '../ui/List/List';
 
-const SelectedList = () => {
-    const router = useRouter();
+const SelectedList = ({ selectedList }) => {
     const listsCtx = useContext(ListsContext);
     const itemsCtx = useContext(ItemsContext);
 
@@ -19,35 +17,13 @@ const SelectedList = () => {
     const [errorCode, setErrorCode] = useState();
     const [timeout, setTimeout] = useState();
 
-    const { listId } = router.query;
-    const selectedList = listsCtx.selectedList;
     const error = itemsCtx.error;
-
-    useEffect(async () => {
-        // Router.query always returns empty on first render, so return out of function
-        if (!listId) {
-            return;
-        }
-        // If a user navigates directly to this page, the lists won't have been loaded
-        if (listsCtx.allLists.length === 0) {
-            try {
-                const result = await getAllLists();
-                listsCtx.setLists(result.allLists);
-            } catch (e) {
-                console.error('ERROR: ', e);
-                setErrorCode(e.props);
-            }
-        }
-
-        // NOTE - selectList will in turn call addItems in the itemsCtx so that items can be edited through items store
-        listsCtx.selectList(listId);
-    }, [listId, listsCtx.allLists]);
 
     if (errorCode) {
         return <Error statusCode={errorCode.message} />;
     }
 
-    if (selectedList.length === 0) {
+    if (!selectedList) {
         return <p className="p-2 text-xl text-center">Loading...</p>;
     }
 
@@ -167,7 +143,7 @@ const SelectedList = () => {
             </form>
 
             <List
-                listItems={itemsCtx.items}
+                listItems={selectedList.items}
                 changed={itemsCtx.updateItem}
                 blur={updateItem}
                 submit={updateItem}
