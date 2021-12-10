@@ -1,8 +1,21 @@
 import Error from 'next/error';
 import { server } from '../config/index';
 
+export const getList = async (listTitle) => {
+    const res = await fetch(`${server}/api/getList?listTitle=${listTitle}`, {
+        method: 'GET',
+    });
+    if (res.ok) {
+        return res.json();
+    }
+    return res.json().then((data) => {
+        throw new Error({
+            message: 'GET LIST - Failed to connect to server!',
+            data: data,
+        });
+    });
+};
 export const getAllLists = async () => {
-    console.log('SERVER: ', server);
     const res = await fetch(`${server}/api/allLists`, {
         method: 'GET',
     });
@@ -11,7 +24,7 @@ export const getAllLists = async () => {
     }
     return res.json().then((data) => {
         throw new Error({
-            message: 'Failed to connect to server!',
+            message: 'GET ALL LISTS - Failed to connect to server!',
             data: data,
         });
     });
