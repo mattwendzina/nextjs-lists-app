@@ -8,7 +8,8 @@ module.exports = (phase) => {
     // npm run dev or next dev
     const isDev = phase === PHASE_DEVELOPMENT_SERVER;
     //npm run build or next build
-    const isProd = phase === PHASE_PRODUCTION_SERVER || PHASE_PRODUCTION_BUILD;
+    const isProd =
+        phase === PHASE_PRODUCTION_SERVER || phase === PHASE_PRODUCTION_BUILD;
 
     const env = {
         MONGO_CONNECTION: (() => {
