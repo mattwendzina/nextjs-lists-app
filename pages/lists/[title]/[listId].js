@@ -1,9 +1,7 @@
 import List from '../../../components/SelectedList/index';
 import { getList } from '../../../helpers/api-utils';
 
-const selectedList = ({ selectedList }) => (
-    <List theSelectedList={selectedList} />
-);
+const selectedList = ({ selectedList }) => <List selectedList={selectedList} />;
 
 export async function getServerSideProps(context) {
     let result = null;
