@@ -1,38 +1,15 @@
 import { Fragment } from 'react';
-import Error from 'next/error';
 import Head from 'next/head';
 import Homepage from '../components/Homepage/Homepage';
-import { getAllLists } from '../helpers/api-utils';
 
-export default function Home({ error, allLists }) {
-    if (error) {
-        console.error('ERROR: ', error);
-        return <Error statusCode={error.message} />;
-    }
-
+export default function Home() {
     return (
         <Fragment>
             <Head>
                 <title>Matt Wendzina</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <Homepage allLists={allLists} />
+            <Homepage />
         </Fragment>
     );
-}
-
-export async function getServerSideProps() {
-    let result = null;
-    let errorCode = false;
-    try {
-        result = await getAllLists();
-    } catch (e) {
-        errorCode = e.props;
-    }
-    return {
-        props: {
-            error: errorCode,
-            allLists: result && result.allLists,
-        },
-    };
 }
