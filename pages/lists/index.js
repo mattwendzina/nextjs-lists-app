@@ -1,33 +1,38 @@
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import AllLists from '../../components/AllLists/index';
-import { getAllLists } from '../../helpers/api-utils';
+import { connectToDatabase, getAllLists } from '../../helpers/db-utils';
 import ListsContext from '../../store/lists-context';
 
 const lists = ({ allLists }) => {
     const listsCtx = useContext(ListsContext);
-    let lists;
-    listsCtx.allLists.length === 0
-        ? (lists = allLists)
-        : (lists = listsCtx.allLists);
+
+    useEffect(() => {
+        listsCtx.setLists(allLists);
+    }, []);
 
     return (
         <Fragment>
-            <AllLists allLists={lists} />
+            <AllLists allLists={allLists} />
         </Fragment>
     );
 };
 
 export async function getServerSideProps() {
-    let result = null;
+    let client;
     let errorCode = false;
-    try {
-        result = await getAllLists();
-    } catch (e) {
-        errorCode = e.props;
-    }
+    let result = null;
+
+    client = await connectToDatabase();
+
+    const response = await getAllLists(client);
+
+    response.length === 0
+        ? (errorCode = { message: 'Failed to retrieve lists!' })
+        : (result = JSON.stringify(response));
+
     return {
         props: {
-            allLists: result && result.allLists,
+            allLists: JSON.parse(result),
         },
     };
 }
