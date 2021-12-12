@@ -1,9 +1,14 @@
 import { Fragment, useContext, useEffect } from 'react';
+import Error from 'next/error';
 import AllLists from '../../components/AllLists/index';
 import { connectToDatabase, getAllLists } from '../../helpers/db-utils';
 import ListsContext from '../../store/lists-context';
 
-const lists = ({ allLists }) => {
+const lists = ({ error, allLists }) => {
+    if (error) {
+        console.error('ERROR: ', error);
+        return <Error statusCode={error.message} />;
+    }
     const listsCtx = useContext(ListsContext);
 
     useEffect(() => {
@@ -32,6 +37,7 @@ export async function getServerSideProps() {
 
     return {
         props: {
+            error: errorCode,
             allLists: JSON.parse(result),
         },
     };
